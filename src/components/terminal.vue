@@ -1,7 +1,7 @@
 <template>
 
 	<div class="terminal-panel">
-		<pre class="terminaljs" data-columns="80" data-rows="24"></pre>
+		<pre class="terminaljs" data-columns="80"></pre>
 	</div>
 
 </template>
@@ -43,6 +43,15 @@
 		display:inline-block;
 		width: 100%;
 		height: 100%;
+	}
+
+	.terminal-panel {
+		width: 100%;
+		height: calc(100% - 16px);
+	}
+
+	pre {
+		margin: 0px;
 	}
 
 </style>

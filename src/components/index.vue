@@ -27,8 +27,6 @@
     <span slot="title">控制台</span>
     <div slot="content">
       <terminal></terminal>
-
-      <!-- <span>222</span> -->
     </div>
   </forms>
 
@@ -73,10 +71,10 @@ export default {
       },
 
       consoleStyles: {
-        left: 'calc( (100% - 550px) / 2 )',
-        top: 'calc(100% - 250px)',
-        width: '550px',
-        height: '250px'
+        left: '251px',
+        // top: 'calc(100% - 250px)',
+        width: 'calc(100% - 504px)',
+        // height: '250px'
       }
     }
   },
