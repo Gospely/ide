@@ -23,10 +23,12 @@
     </div>
   </forms>
 
-  <forms v-show="false" v-bind:styles="consoleStyles" fid="console">
+  <forms v-show="true" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
-      
+      <terminal></terminal>
+
+      <!-- <span>222</span> -->
     </div>
   </forms>
 
@@ -39,6 +41,7 @@ import designPanel from './design.vue';
 import attrPanel from './attr.vue';
 import store from '../vuex.js';
 import forms from './forms/form.vue';
+import terminal from './terminal.vue';
 
 export default {
   data () {
@@ -85,7 +88,8 @@ export default {
     controlsPanel,
     designPanel,
     forms,
-    attrPanel
+    attrPanel,
+    terminal
   },
 
   methods: {
