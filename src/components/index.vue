@@ -1,27 +1,42 @@
 <template>
 
-  <forms v-bind:styles="styles" fid="controls">
-    <span slot="title">工具箱</span>
-    <div slot="content">
-      <controls-panel></controls-panel>
-    </div>
-  </forms>
+  <div class="columns">
+    <div class="column">
 
-  <forms v-bind:styles="designStyles" fid="form">
-    <span slot="title">设计与编码</span>
-    <div slot="content">
-      <section class="design">
-        <design-panel></design-panel>
-      </section>
-    </div>
-  </forms>
+      <forms v-bind:styles="styles" fid="controls">
+        <span slot="title">工具箱</span>
+        <div slot="content" id="tools">
+          <ui-tabs type="text" :fullwidth="true">
+              <ui-tab header="控件">
+                <controls-panel></controls-panel>
+              </ui-tab>
+              <ui-tab header="文件目录">
 
-  <forms v-bind:styles="attrStyles" fid="attributes">
-    <span slot="title">属性</span>
-    <div slot="content">
-      <attr-panel></attr-panel>
+              </ui-tab>
+          </ui-tabs>
+        </div>
+      </forms>
+
     </div>
-  </forms>
+    <div class="column">
+      <forms v-bind:styles="designStyles" fid="form">
+        <span slot="title">设计与编码</span>
+        <div slot="content">
+          <section class="design">
+            <design-panel></design-panel>
+          </section>
+        </div>
+      </forms>
+    </div>
+    <div class="column">
+      <forms v-bind:styles="attrStyles" fid="attributes">
+        <span slot="title">属性</span>
+        <div slot="content">
+          <attr-panel></attr-panel>
+        </div>
+      </forms>
+    </div>
+  </div>
 
   <forms v-show="true" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
@@ -57,10 +72,10 @@ export default {
       },
 
       designStyles: {
-        left: '251px',
-        top: '36px',
-        width: 'calc(100% - 504px)',
-        height: 'calc(100% - 40px)'
+        // left: '251px',
+        // top: '36px',
+        width: '100%',
+        height: '100%'
       },
 
       attrStyles: {
@@ -112,6 +127,14 @@ export default {
 
 .ui-snackbar {
   padding: 8px 24px;
+}
+
+.ui-tabs-body {
+  padding: 0px;
+}
+
+#tools .ui-tabs-body {
+  margin-top: 1px;
 }
 
 </style>

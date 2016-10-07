@@ -184,8 +184,6 @@ export default {
   #editor {
     width: 100%;
     height: 100vh;
-    margin-top: -16px;
-    margin-left: -16px;
     width: calc(100% + 32px);
   }
 
@@ -196,9 +194,7 @@ export default {
   .designer-wrapper {
     text-align: center;
     height: 100vh;
-    margin-top: -16px;
-    margin-left: -16px;
-    width: calc(100% + 32px);
+    width: calc(100% + 16px);
     line-height: 50%;
     background: -webkit-linear-gradient(left top, #dde9f2 , #efefef); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(bottom right, #dde9f2, #efefef); /* Opera 11.1 - 12.0 */

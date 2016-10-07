@@ -14,7 +14,7 @@
 		ready () {
 
 			var containers = document.getElementsByClassName('terminaljs'),
-				socket = io('http://119.29.243.71:3000/pty'), term, stream;
+				socket = io('http://120.76.235.234:8888/pty'), term, stream;
 			ss.forceBase64 = true;
 
 			for(var i = 0; i < containers.length; i++) {

@@ -429,7 +429,7 @@ export default {
 	    max-width: 100vw;
 	    overflow-x: hidden;
 	    overflow-y: auto;
-		position: absolute;
+		/*position: absolute;*/
 		z-index: 60000;
 		border: 1px solid #dde1e4;
 	}
