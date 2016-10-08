@@ -279,6 +279,7 @@ export default {
 		position: relative;
 		height: 27px;
 		margin: 5px;
+		padding-top: 3px;
 	}
 
 	.ui-form-container .form-title h1 {
