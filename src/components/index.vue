@@ -1,7 +1,7 @@
 <template>
 
   <div class="columns">
-    <div class="column">
+    <div class="column is-2">
 
       <forms v-bind:styles="styles" fid="controls">
         <span slot="title">工具箱</span>
@@ -10,7 +10,10 @@
               <ui-tab header="控件">
                 <controls-panel></controls-panel>
               </ui-tab>
-              <ui-tab header="文件目录">
+              <ui-tab header="内容">
+
+              </ui-tab>
+              <ui-tab header="文件">
 
               </ui-tab>
           </ui-tabs>
@@ -28,7 +31,7 @@
         </div>
       </forms>
     </div>
-    <div class="column">
+    <div class="column is-2">
       <forms v-bind:styles="attrStyles" fid="attributes">
         <span slot="title">属性</span>
         <div slot="content">
@@ -37,13 +40,13 @@
       </forms>
     </div>
   </div>
-
+<!-- 
   <forms v-show="true" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
       <terminal></terminal>
     </div>
-  </forms>
+  </forms> -->
 
 </template>
 
@@ -65,31 +68,19 @@ export default {
       fuckshit: 'fuckshi111t',
 
       styles: {
-        width: '250px',
-        height: 'calc(100% - 40px)',
-        left: '0px',
-        top: '36px'
+        width: '100%'
       },
 
       designStyles: {
-        // left: '251px',
-        // top: '36px',
-        width: '100%',
-        height: '100%'
+        width: '100%'
       },
 
       attrStyles: {
-        left: 'calc(100% - 252px)',
-        top: '36px',
-        width: '250px',
-        height: 'calc(100% - 40px)'
+        width: '100%'
       },
 
       consoleStyles: {
-        left: '251px',
-        // top: 'calc(100% - 250px)',
-        width: 'calc(100% - 504px)',
-        // height: '250px'
+        width: '100%'
       }
     }
   },

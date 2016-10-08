@@ -425,8 +425,10 @@ export default {
 	    padding: 0;
 	    background-color: #fff;
 	    border-radius: 2px;
-	    max-height: 100vh;
-	    max-width: 100vw;
+	    /*max-height: 100vh;*/
+	    /*max-width: 100vw;*/
+	    height: calc(100% - 40px);
+	    width: 100%;
 	    overflow-x: hidden;
 	    overflow-y: auto;
 		/*position: absolute;*/

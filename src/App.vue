@@ -7,7 +7,7 @@
             type="default"
             text-color="black"
             brand="Gospel"
-            title="Web可视化集成编程环境" 
+            title="Web可视化集成开发环境" 
             show-brand 
             :loading="isLoading" 
             preloader-top
@@ -27,20 +27,26 @@
             <div slot="actions">
 
                 <ui-icon-button
-                    type="clear" color="black" icon="play_circle_outline" v-el:debug
+                    type="clear" color="black" icon="mdi mdi-play" v-el:debug
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.debug" content="启动调试"></ui-tooltip>
 
                 <ui-icon-button
-                    type="clear" color="black" icon="stop_circle_outline" v-el:stop-debug
+                    type="clear" color="black" icon="mdi mdi-cube-send" v-el:build
                 ></ui-icon-button>
 
-                <ui-tooltip :trigger="$els.stopDebug" content="停止调试"></ui-tooltip>
+                <ui-tooltip :trigger="$els.build" content="构建"></ui-tooltip>
 
                 <ui-icon-button
-                    type="clear" color="black" icon="view_modules" has-dropdown-menu :show-menu-secondary-text="true"
-                    :menu-options="formMenu" dropdown-position="bottom right" v-el:forms
+                    type="clear" color="black" icon="mdi mdi-onedrive" v-el:deploy
+                ></ui-icon-button>
+
+                <ui-tooltip :trigger="$els.deploy" content="部署"></ui-tooltip>
+
+                <ui-icon-button
+                    type="clear" color="black" icon="mdi mdi-view-dashboard" has-dropdown-menu :show-menu-secondary-text="true"
+                    :menu-options="formMenu" :show-menu-icons="true" dropdown-position="bottom right" v-el:forms
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.forms" content="窗口"></ui-tooltip>
@@ -99,7 +105,7 @@
 
       </section>
     </header>
-    <section>
+    <section style="height:100%">
       <router-view></router-view>
     </section>
     <footer>
@@ -204,19 +210,19 @@ export default {
       formMenu: [{
         id: 'controls',
         text: '工具箱',
-        secondaryText: 'O'
+        icon: 'check'
       }, {
         id: 'attr',
         text: '属性',
-        secondaryText: 'O'
+        icon: 'check'
       }, {
         id: 'console',
         text: '终端',
-        secondaryText: 'O'
+        icon: 'check'
       }, {
         id: 'designer',
         text: '设计器',
-        secondaryText: 'O'
+        icon: 'check'
       }],
 
       modalShowingCtrl: {
@@ -274,9 +280,14 @@ body {
   font-size: 12px!important;
 }
 
+.columns {
+  height: 100%;
+}
+
 #app {
   color: #2c3e50;
   font-family: Source Sans Pro, Helvetica, sans-serif;
+  height: 100%;
 }
 
 #app a {
@@ -389,10 +400,12 @@ body {
 .ui-form-container .form-title h1 {
     height: 16px!important;
     line-height: 10px!important;
+    margin: 0px;
 }
 
 .ui-tab-header-item {
   height: 30px!important;
+  min-width: 40px!important;
 }
 
 .ui-menu-item:not(.divider) {
@@ -404,6 +417,10 @@ body {
 
 .ui-snackbar {
     padding: 2px 12px!important;
+}
+
+.ui-form-container .ui-tabs {
+  margin-bottom: 0px!important;
 }
 
 .column {

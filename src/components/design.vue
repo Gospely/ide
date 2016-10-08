@@ -3,7 +3,7 @@
   <ui-tabs type="text">
       <ui-tab header="设计" @selected="refreshIframe()">
 
-        <div class="designer-wrapper">
+        <div style="display:none" class="designer-wrapper">
           <div class="loader">
             <ui-progress-circular :show="loading" color="multi-color">
             </ui-progress-circular>
@@ -193,8 +193,6 @@ export default {
 
   .designer-wrapper {
     text-align: center;
-    height: 100vh;
-    width: calc(100% + 16px);
     line-height: 50%;
     background: -webkit-linear-gradient(left top, #dde9f2 , #efefef); /* Safari 5.1 - 6.0 */
     background: -o-linear-gradient(bottom right, #dde9f2, #efefef); /* Opera 11.1 - 12.0 */
