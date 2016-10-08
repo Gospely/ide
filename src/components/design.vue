@@ -183,8 +183,8 @@ export default {
 
   #editor {
     width: 100%;
-    height: 100vh;
-    width: calc(100% + 32px);
+    /*height: 100vh;*/
+    height: 100%;
   }
 
   .drop {

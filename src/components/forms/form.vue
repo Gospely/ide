@@ -9,7 +9,7 @@
 	  	<div>
 	   		<a class="form-min" href="javascript:;" style="display:none" title="最小化"></a>
 	   		<ui-icon-button class="form-control form-revert" type="flat" style="display:none" color="default" icon="minus"></ui-icon-button>
-	   		<ui-icon-button class="form-control form-max" type="flat" color="default" icon="add"></ui-icon-button>
+	   		<ui-icon-button v-show="false" class="form-control form-max" type="flat" color="default" icon="add"></ui-icon-button>
 	   		<ui-icon-button @click="dispatchCloseEvent()" class="form-control form-close" type="flat" color="default" icon="close"></ui-icon-button>
 	  	</div>
 	</div>
@@ -62,7 +62,7 @@ function drag(oDrag, handle)
   var oRevert = get.byClass("form-revert", oDrag)[0];
   var oClose = get.byClass("form-close", oDrag)[0];
   handle = handle || oDrag;
-  handle.style.cursor = "move";
+  handle.style.cursor = "default";
 
   handle.onmousedown = function (event)
   {
@@ -382,7 +382,7 @@ export default {
 	}
 
 	.ui-form-container .form-resizeT,.ui-form-container .form-resizeB {
-		width: 100%;
+		/*width: 100%;*/
 		height: 5px;
 		cursor: n-resize;
 	}
@@ -425,9 +425,7 @@ export default {
 	    padding: 0;
 	    background-color: #fff;
 	    border-radius: 2px;
-	    /*max-height: 100vh;*/
-	    /*max-width: 100vw;*/
-	    height: calc(100% - 40px);
+	    height: 100%;
 	    width: 100%;
 	    overflow-x: hidden;
 	    overflow-y: auto;

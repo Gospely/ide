@@ -105,7 +105,7 @@
 
       </section>
     </header>
-    <section style="height:100%">
+    <section style="height:calc(100% - 36px)">
       <router-view></router-view>
     </section>
     <footer>
@@ -284,6 +284,11 @@ body {
   height: 100%;
 }
 
+.column {
+  padding: 0px!important;
+  /*padding-top: 10px!important;*/
+}
+
 #app {
   color: #2c3e50;
   font-family: Source Sans Pro, Helvetica, sans-serif;
@@ -350,7 +355,7 @@ body {
 }
 
 .ui-toolbar {
-  height: 36px!important;
+  height: 34px!important;
   font-size: 12px!important;
 }
 
@@ -1304,9 +1309,9 @@ body {
 }
 
 .columns {
-  margin-left: -10px;
+/*  margin-left: -10px;
   margin-right: -10px;
-  margin-top: -10px;
+  margin-top: -10px;*/
 }
 
 .columns:last-child {
