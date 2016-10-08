@@ -31,7 +31,7 @@
         </div>
       </forms>
     </div>
-    <div class="column is-2">
+    <div class="column is-2" style="margin-right: 2px;">
       <forms v-bind:styles="attrStyles" fid="attributes">
         <span slot="title">属性</span>
         <div slot="content">

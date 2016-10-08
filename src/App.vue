@@ -348,6 +348,7 @@ body {
 .ui-snackbar {
   z-index: 65535!important;
   transform: scale(1);
+  position: absolute;
 }
 
 .ui-collapsible-header {

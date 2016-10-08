@@ -3,7 +3,7 @@
   <ui-tabs type="text">
       <ui-tab header="设计" @selected="refreshIframe()">
 
-        <div style="display:none" class="designer-wrapper">
+        <div class="designer-wrapper">
           <div class="loader">
             <ui-progress-circular :show="loading" color="multi-color">
             </ui-progress-circular>
@@ -183,8 +183,8 @@ export default {
 
   #editor {
     width: 100%;
-    /*height: 100vh;*/
-    height: 100%;
+    height: 100vh;
+    /*height: 100%;*/
   }
 
   .drop {
