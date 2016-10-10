@@ -5,7 +5,8 @@
 			<div v-for="(key, tab) in tabs" @click="toggleTab(key, tabs)" class="panel-header-item" v-bind:class="{'active': tab.header.active}">
 				<div class="label">{{tab.header.title}}</div>
 				<div class="close">
-					 <ui-icon-button type="clear" icon="close" color="white"></ui-icon-button>
+					<ui-icon-button v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
+					<ui-icon-button v-else type="clear" icon="close" color="danger"></ui-icon-button>
 				</div>
 			</div>
 		</div>
