@@ -395,12 +395,12 @@ body {
 }
 
 .ui-icon-button {
-  width: 28px!important;
-  height: 28px!important;
+  width: 24px!important;
+  height: 24px!important;
 }
 
 .form-title .ui-icon {
-  font-size: 18px!important;
+  font-size: 12px!important;
 }
 
 .ui-form-container .form-title h1 {
@@ -412,6 +412,7 @@ body {
 .ui-tab-header-item {
   height: 30px!important;
   min-width: 40px!important;
+  text-transform: none!important;
 }
 
 .ui-menu-item:not(.divider) {
@@ -1395,5 +1396,17 @@ body {
     display: -ms-flexbox;
     display: flex;
   }
+}
+
+.panel-close {
+  position: absolute!important;
+  margin-top: -26px;
+  /*margin-left: 100px;*/
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.panel-close .ui-icon {
+  font-size: 10px!important;
 }
 </style>

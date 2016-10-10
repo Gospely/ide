@@ -12,9 +12,13 @@ import stores from './vuex/stores.js';
 
 import $ from 'jquery';
 
+import Panel from './components/ui/Panel/Panel.vue';
+
 //加载keen-ui
 Vue.use(Keen);
 Vue.use(Vuex);
+
+Vue.component('panel', Panel);
 
 //----------------------------初始化AJAX----------------------------
 

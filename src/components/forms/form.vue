@@ -1,7 +1,7 @@
 <template>
 
 <div @click="setTop()" id="{{fid}}" class="ui-form-container" v-bind:style="{ width: styles.width, height: styles.height, left: styles.left, top: styles.top}">
-	<div class="form-title">
+	<div v-show="showTitle" class="form-title">
 		<h1 class="ui-modal-header-text">
 			{{title}}
 			<slot name="title"></slot>
@@ -240,6 +240,13 @@ export default {
   	},
   	fid: {
   		default: 'ss'
+  	},
+
+  	showTitle: {
+  		type: Boolean,
+  		default () {
+  			return true;
+  		}
   	}
   },
 
@@ -436,6 +443,6 @@ export default {
 	}
 
 	.form-control {
-		margin-top: -14px;
+		margin-top: -8px;
 	}
 </style>

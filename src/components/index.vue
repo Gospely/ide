@@ -1,10 +1,9 @@
 <template>
 
   <div class="columns">
-    <div class="column is-2">
+    <div class="column">
 
-      <forms v-bind:styles="styles" fid="controls">
-        <span slot="title">工具箱</span>
+      <forms :show-title="false" v-bind:styles="styles" fid="controls">
         <div slot="content" id="tools">
           <ui-tabs type="text" :fullwidth="true">
               <ui-tab header="控件">
@@ -21,32 +20,27 @@
       </forms>
 
     </div>
-    <div class="column">
-      <forms v-bind:styles="designStyles" fid="form">
-        <span slot="title">设计与编码</span>
-        <div slot="content">
-          <section class="design">
-            <design-panel></design-panel>
-          </section>
-        </div>
-      </forms>
-    </div>
+    <forms :show-title="false" v-bind:styles="designStyles" fid="form">
+      <section slot="content" class="design">
+        <design-panel></design-panel>
+      </section>
+    </forms>
     <div class="column is-2" style="margin-right: 2px;">
       <forms v-bind:styles="attrStyles" fid="attributes">
         <span slot="title">属性</span>
-        <div slot="content">
-          <attr-panel></attr-panel>
-        </div>
+          <attr-panel slot="content"></attr-panel>
       </forms>
     </div>
-  </div>
-<!-- 
+
   <forms v-show="true" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
-      <terminal></terminal>
+      <!-- <terminal></terminal> -->
+      <!-- <panel></panel> -->
     </div>
-  </forms> -->
+  </forms>
+
+  </div>
 
 </template>
 
@@ -59,57 +53,10 @@ import store from '../vuex.js';
 import forms from './forms/form.vue';
 import terminal from './terminal.vue';
 
-    function onClick(e,treeId, treeNode) {
-      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-      zTree.expandNode(treeNode);
-    }
-
-    var newCount = 1;
-    function addHoverDom(treeId, treeNode) {
-      var sObj = $("#" + treeNode.tId + "_span");
-      if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-      var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-        + "' title='add node' onfocus='this.blur();'></span>";
-      sObj.after(addStr);
-      var btn = $("#addBtn_"+treeNode.tId);
-      if (btn) btn.bind("click", function(){
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
-        return false;
-      });
-    };
-
-    function removeHoverDom(treeId, treeNode) {
-      $("#addBtn_"+treeNode.tId).unbind().remove();
-    };
-
-    function onExpand(event, treeId, treeNode) {
-      if (treeNode === autoExpandNode) {
-        className = (className === "dark" ? "":"dark");
-        showLog("[ "+getTime()+" onExpand ]&nbsp;&nbsp;&nbsp;&nbsp;" + treeNode.name);
-      }
-    }
-
-    function showLog(str) {
-      if (!log) log = $("#log");
-      log.append("<li class='"+className+"'>"+str+"</li>");
-      if(log.children("li").length > 8) {
-        log.get(0).removeChild(log.children("li")[0]);
-      }
-    }
-    function getTime() {
-      var now= new Date(),
-      h=now.getHours(),
-      m=now.getMinutes(),
-      s=now.getSeconds(),
-      ms=now.getMilliseconds();
-      return (h+":"+m+":"+s+ " " +ms);
-    }
-
-    function setTrigger() {
-      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-      zTree.setting.edit.drag.autoExpandTrigger = $("#callbackTrigger").attr("checked");
-    }
+function setTrigger() {
+  var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+  zTree.setting.edit.drag.autoExpandTrigger = $("#callbackTrigger").attr("checked");
+}
 
 export default {
   data () {
