@@ -36,7 +36,7 @@
     <span slot="title">控制台</span>
     <div slot="content">
       <!-- <terminal></terminal> -->
-      <!-- <panel></panel> -->
+      <panel></panel>
     </div>
   </forms>
 

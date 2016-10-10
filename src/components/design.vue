@@ -3,7 +3,6 @@
   <ui-tabs type="text">
       
       <ui-tab header="form.vue [设计]" @selected="refreshIframe()">
-        <ui-icon-button class="panel-close" type="flat" icon="close" color="danger"></ui-icon-button>
         <div class="designer-wrapper">
           <div class="loader">
             <ui-progress-circular :show="loading" color="multi-color">
