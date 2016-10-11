@@ -32,11 +32,10 @@
       </forms>
     </div>
 
-  <forms :show-title="false" v-show="true" v-bind:styles="consoleStyles" fid="console">
+  <forms :show-title="false" v-show="false" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
-      <!-- <terminal></terminal> -->
-      <panel></panel>
+      <terminal></terminal>
     </div>
   </forms>
 

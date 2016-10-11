@@ -2,32 +2,128 @@
 
 	<div class="panel">
 		<div class="panel-header">
-			<div v-for="(key, tab) in tabs" @click="toggleTab(key, tabs)" class="panel-header-item" v-bind:class="{'active': tab.header.active}">
+			<div title="{{tab.header.title}}" v-for="(key, tab) in tabsHeader" @click="toggleTab(key, tab)" class="panel-header-item" v-bind:class="{'active': tab.header.active}">
 				<div class="label">{{tab.header.title}}</div>
 				<div class="close">
-					<ui-icon-button @click="closeThisTab(key)" v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
-					<ui-icon-button @click="closeThisTab(key)" v-else type="clear" icon="close" color="danger"></ui-icon-button>
+					<ui-icon-button @click="closeTab(key)" v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
+					<ui-icon-button @click="closeTab(key)" v-else type="clear" icon="close" color="danger"></ui-icon-button>
 				</div>
 			</div>
 		</div>
 		<div class="panel-body">
-			<div class="panel-item active">
-				<span>fucku</span>
-			</div>
-			<div class="panel-item">
-				<p>bitch</p>
-			</div>
+			<slot></slot>
 		</div>
 	</div>
 
 </template>
 
+<script>
+
+	import PanelTab from './PanelTab.vue';
+
+	export default {
+
+		components: {
+			PanelTab
+		},
+
+		props: {
+
+			tabsHeader: {
+				type: Array,
+				default () {
+					return [];
+				}
+			}
+
+		},
+
+		ready () {
+
+			for (var i = 0; i < this.tabsHeader.length; i++) {
+				var tab = this.tabsHeader[i];
+				if(tab.header.active) {
+					this.$set('currentTab', i);
+					break;
+				}
+			};
+
+		},
+
+		data: function() {
+			return {
+				currentTab: 0
+			}
+		},
+
+		methods: {
+
+			toggleTab: function(key, tab) {
+
+				if(key === this.currentTab) {
+					return false;
+				}
+
+				this.isTabClear();
+
+				this.tabsHeader[key].header.active = true;
+
+				var prevTab = this.tabsHeader[this.currentTab];
+
+				if(prevTab) {
+					prevTab.header.active = false;
+				}
+
+				this.currentTab = key;
+
+				if(tab) {
+					this.$dispatch('tabchanged', tab);
+				}
+			},
+
+			isTabClear: function() {
+				var isClear = this.tabsHeader.length <= 0;
+
+				if(isClear) {
+					this.$dispatch('tabClear');
+					return;					
+				}
+			},
+
+			closeTab: function(key) {
+				this.tabsHeader.splice(key, 1);
+
+				this.isTabClear();
+
+				console.log(key);
+
+				if(key === 0) {
+					key = 1;
+				}
+					
+				var prevTab = key - 1 < 0 ? 0 : key - 1;
+
+				console.log(prevTab, this.tabsHeader);
+
+				this.toggleTab(prevTab, this.tabsHeader[prevTab]);
+			}
+		}
+
+	}
+
+</script>
+
 <style>
+
+.panel {
+	width: 100%;
+}
 
 .panel-header {
 	transition: transform 0.2s ease;
 	width: 100%;
-	height: 32px;
+	height: 30px;
+	display: inline-flex;
 }
 
 .panel-item {
@@ -41,13 +137,13 @@
 .panel-header-item {
     position: relative;
     float: left;
-    height: 32px;
+    height: 30px;
     display: inline-block;
     cursor: pointer;
     color: rgb(85,85,85);
     background-color: #eeeeee!important;
     box-shadow: none;
-    width: 250px;
+    width: 200px;
     overflow: hidden;
     z-index: 0;
     /*transition: color .2s ease,background .1s ease,width .1s ease;*/
@@ -95,102 +191,3 @@
 }
 
 </style>
-
-<script>
-
-	export default {
-
-		props: {
-
-			tabs: {
-				type: Array,
-				default () {
-					return [{
-						header: {
-							title: 'form.vue [设计]',
-							src: '',
-							type: 'designer',
-							active: true
-						}
-					}, {
-						header: {
-							title: 'form.vue',
-							src: '',
-							type: 'code',
-							active: false
-						}
-					}]
-				}
-			}
-
-		},
-
-		ready () {
-
-			for (var i = 0; i < this.tabs.length; i++) {
-				var tab = this.tabs[i];
-				if(tab.header.active) {
-					this.$set('currentTab', i);
-					break;
-				}
-			};
-
-		},
-
-		data: function() {
-			return {
-				currentTab: 0
-			}
-		},
-
-		methods: {
-
-			toggleTab: function(key, tab) {
-
-				if(key === this.currentTab) {
-					return false;
-				}
-
-				this.isTabClear();
-
-				console.log(this.currentTab);
-
-				this.tabs[key].header.active = true;
-
-				var prevTab = this.tabs[this.currentTab];
-
-				if(prevTab) {
-					prevTab.header.active = false;
-				}
-
-				this.currentTab = key;
-
-				if(tab) {
-					this.$dispatch('tabChanged', tab);
-				}
-			},
-
-			isTabClear: function() {
-				var isClear = this.tabs.length <= 0;
-
-				if(isClear) {
-					this.$dispatch('tabClear');
-					return;					
-				}
-			},
-
-			closeThisTab: function(key) {
-				this.tabs.splice(key, 1);
-
-				this.isTabClear();
-
-				var prevTab = key - 1 < 0 ? 0 : key - 1;
-
-				this.toggleTab(prevTab, this.tabs[prevTab]);
-			}
-
-		}
-
-	}
-
-</script>

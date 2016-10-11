@@ -1,25 +1,16 @@
 <template>
 
-  <ui-tabs type="text">
-      
-      <ui-tab header="form.vue [设计]" @selected="refreshIframe()">
-        <div class="designer-wrapper">
-          <div class="loader">
-            <ui-progress-circular :show="loading" color="multi-color">
-            </ui-progress-circular>
-          </div>
-        </div>
-      </ui-tab>
+  <panel @tabchanged="startCoding" :tabs-header.sync="tabs.tabsHeader">
+    
+    <panel-tab :active="true">
+      <designer :designer.sync="designer"></designer>
+    </panel-tab>
 
-      <ui-tab header="form.vue" @selected="startCoding()">
-       <ui-icon-button class="panel-close" type="flat" icon="close" color="danger"></ui-icon-button>
-        <div id="editor">{{codes}}</div>
-      </ui-tab>
+    <panel-tab :active="false">
+      <editor :codes.sync="codes"></editor>
+    </panel-tab>
 
-      <div id="fuckub">
-
-      </div>
-  </ui-tabs>
+  </panel>
 
 </template>
 
@@ -28,11 +19,40 @@
 import Vue from 'Vue';
 import { incrementCounter } from '../vuex/actions.js';
 
+import Designer from './template/Designer.vue';
+import Editor from './template/Editor.vue';
+
 export default {
+
+  components: {
+    Designer,
+    Editor
+  },
+
   data () {
     return {
 
-      codes: '// TO DO',
+      tabs: {
+        tabsHeader: [{
+          header: {
+            title: 'form.vue [设计]',
+            src: '',
+            type: 'designer',
+            active: true
+          }
+        }, {
+          header: {
+            title: 'form.vue',
+            src: '',
+            type: 'code',
+            active: false
+          }
+        }],
+
+        tabsPanel: {
+
+        }
+      },
 
       designer: {
         id: 'gospelDesignerArea',
@@ -47,9 +67,8 @@ export default {
         name: 'gder',
       },
 
-      editor: '',
+      codes: '// TO DO'
 
-      loading: true,
     }
   },
 
@@ -66,7 +85,7 @@ export default {
 
       //初始化设计器
 
-      self.$get('initDesignerWrapper')();
+      // self.$get('initDesignerWrapper')();
 
       // var Tabs = Vue.extend({
       //   template: '      <ui-tab header="form.vue"> \
@@ -101,97 +120,8 @@ export default {
 
   methods: {
 
-    initDesignerWrapper: function() {
-
-      var self = this;
-
-      var iframe = document.createElement("iframe");
-      iframe.src = this.designer.src;
-      iframe.setAttribute('class', this.designer.class);
-      iframe.setAttribute('id', this.designer.id)
-      iframe.setAttribute('width', this.designer.width);
-      iframe.setAttribute('height', this.designer.height);
-      iframe.setAttribute('name', this.designer.name);
-
-      this.designer.context = $('.' + self.designer.class).contents();
-
-      var designerOnload = function() {
-        self.loading = false;
-        $('.loader').hide();
-        var designerCode = self.designer.context.find('body').html();
-        self.designer.dom = iframe;
-
-        self.$nextTick(function() {
-
-          //初始化编辑器
-          ace.require("ace/ext/language_tools");
-          self.editor = ace.edit("editor");
-          self.editor.setTheme("ace/theme/twilight");
-          self.editor.setOptions({
-              enableBasicAutocompletion: true
-          });
-
-          window.refreshDesignerCode = this.refreshDesignerCode;
-
-          var HTMLMode = ace.require("ace/mode/html").Mode;
-          var JavaScript = ace.require('ace/mode/javascript').Mode;
-          this.editor.session.setMode(new HTMLMode());
-
-          var editorBeforeChanged = new Date().getTime();
-
-          this.editor.getSession().on('change', function(changed) {
-
-            var editorAfterChanged = new Date().getTime();
-
-            if(editorAfterChanged - editorBeforeChanged > 1500) {
-              editorBeforeChanged = editorAfterChanged;
-            }
-
-          });
-
-        });
-
-      }
-
-      if (iframe.attachEvent){
-
-        iframe.attachEvent("onload", function(){
-          designerOnload();
-        });
-
-      } else {
-
-        iframe.onload = function(){
-          designerOnload();
-        };
-
-      }
-
-      $('.designer-wrapper').append(iframe);
-
-    },
-
     startCoding: function() {
-      this.refreshDesignerCode($('.' + this.designer.class).contents().find('body').html());
-      this.editor.focus();
-      this.editor.gotoLine(this.editor.session.getLength());
-    },
-
-    refreshDesignerCode: function(codes) {
-      this.codes = codes;
-      this.editor.setValue(codes);
-      this.editor.clearSelection();
-    },
-
-    refreshIframe: function() {
-      $('.' + this.designer.class).contents().find('body').html(this.editor.getValue());
-
-      var self = this;
-
-      setTimeout(function() {
-        var Designer = document.getElementById(self.designer.id).contentWindow.designer;
-        Designer.init(self.designer.container);
-      }, 1);
+      window.startCoding(this.designer);
     }
 
   }
