@@ -5,8 +5,8 @@
 			<div v-for="(key, tab) in tabs" @click="toggleTab(key, tabs)" class="panel-header-item" v-bind:class="{'active': tab.header.active}">
 				<div class="label">{{tab.header.title}}</div>
 				<div class="close">
-					<ui-icon-button v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
-					<ui-icon-button v-else type="clear" icon="close" color="danger"></ui-icon-button>
+					<ui-icon-button @click="closeThisTab(key)" v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
+					<ui-icon-button @click="closeThisTab(key)" v-else type="clear" icon="close" color="danger"></ui-icon-button>
 				</div>
 			</div>
 		</div>
@@ -16,9 +16,6 @@
 			</div>
 			<div class="panel-item">
 				<p>bitch</p>
-			</div>
-			<div class="panel-item">
-				<p>shit</p>
 			</div>
 		</div>
 	</div>
@@ -30,6 +27,7 @@
 .panel-header {
 	transition: transform 0.2s ease;
 	width: 100%;
+	height: 32px;
 }
 
 .panel-item {
@@ -52,7 +50,7 @@
     width: 250px;
     overflow: hidden;
     z-index: 0;
-    transition: color .2s ease,background .1s ease,width .1s ease;
+    /*transition: color .2s ease,background .1s ease,width .1s ease;*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -82,8 +80,8 @@
 }
 
 .panel-header-item .close .ui-icon-button {
-    width: 18px;
-    height: 18px;
+    width: 18px!important;
+    height: 18px!important;
 }
 
 .panel-header-item .close .ui-icon {
@@ -153,9 +151,42 @@
 					return false;
 				}
 
+				this.isTabClear();
+
+				console.log(this.currentTab);
+
 				this.tabs[key].header.active = true;
-				this.tabs[this.currentTab].header.active = false;
+
+				var prevTab = this.tabs[this.currentTab];
+
+				if(prevTab) {
+					prevTab.header.active = false;
+				}
+
 				this.currentTab = key;
+
+				if(tab) {
+					this.$dispatch('tabChanged', tab);
+				}
+			},
+
+			isTabClear: function() {
+				var isClear = this.tabs.length <= 0;
+
+				if(isClear) {
+					this.$dispatch('tabClear');
+					return;					
+				}
+			},
+
+			closeThisTab: function(key) {
+				this.tabs.splice(key, 1);
+
+				this.isTabClear();
+
+				var prevTab = key - 1 < 0 ? 0 : key - 1;
+
+				this.toggleTab(prevTab, this.tabs[prevTab]);
 			}
 
 		}

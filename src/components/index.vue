@@ -32,7 +32,7 @@
       </forms>
     </div>
 
-  <forms v-show="true" v-bind:styles="consoleStyles" fid="console">
+  <forms :show-title="false" v-show="true" v-bind:styles="consoleStyles" fid="console">
     <span slot="title">控制台</span>
     <div slot="content">
       <!-- <terminal></terminal> -->
