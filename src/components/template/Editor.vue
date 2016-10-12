@@ -61,6 +61,8 @@
 
 	          	var editorBeforeChanged = new Date().getTime();
 
+	          	this.editor.$blockScrolling = Infinity;
+
 	          	this.editor.getSession().on('change', function(changed) {
 	          		self.$dispatch('change', changed);
 		        });

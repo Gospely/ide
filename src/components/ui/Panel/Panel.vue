@@ -2,10 +2,10 @@
 
 	<div class="panel">
 		<div class="panel-header">
-			<div title="{{tab.header.title}}" v-for="(key, tab) in tabsHeader" @click="toggleTab(key, tab)" class="panel-header-item" v-bind:class="{'active': tab.header.active}">
-				<div class="label">{{tab.header.title}}</div>
+			<div title="{{tab.title}}" v-for="(key, tab) in tabsHeader" @click="toggleTab(key, tab)" class="panel-header-item" v-bind:class="{'active': tab.active}">
+				<div class="label">{{tab.title}}</div>
 				<div class="close">
-					<ui-icon-button @click="closeTab(key)" v-if="tab.header.active" type="clear" icon="close" color="white"></ui-icon-button>
+					<ui-icon-button @click="closeTab(key)" v-if="tab.active" type="clear" icon="close" color="white"></ui-icon-button>
 					<ui-icon-button @click="closeTab(key)" v-else type="clear" icon="close" color="danger"></ui-icon-button>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 
 			for (var i = 0; i < this.tabsHeader.length; i++) {
 				var tab = this.tabsHeader[i];
-				if(tab.header.active) {
+				if(tab.active) {
 					this.$set('currentTab', i);
 					break;
 				}
@@ -66,15 +66,22 @@
 
 				this.isTabClear();
 
-				this.tabsHeader[key].header.active = true;
+				this.tabsHeader[key].active = true;
 
 				var prevTab = this.tabsHeader[this.currentTab];
 
 				if(prevTab) {
-					prevTab.header.active = false;
+					prevTab.active = false;
 				}
 
 				this.currentTab = key;
+
+				this.$children.forEach(t => {
+					t.active = false;
+					if(t.title == tab.title) {
+						t.active = true;
+					}
+		        });
 
 				if(tab) {
 					this.$dispatch('tabchanged', tab);

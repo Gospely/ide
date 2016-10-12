@@ -1,12 +1,12 @@
 <template>
 
-  <panel @tabchanged="startCoding" :tabs-header.sync="tabs.tabsHeader">
+  <panel @tabchanged="tabChanged" :tabs-header.sync="tabs.tabsHeader">
     
-    <panel-tab :active="true">
+    <panel-tab :active="true" title="form.vue [设计]">
       <designer :designer.sync="designer"></designer>
     </panel-tab>
 
-    <panel-tab :active="false">
+    <panel-tab :active="false" title="form.vue">
       <editor :codes.sync="codes"></editor>
     </panel-tab>
 
@@ -22,6 +22,12 @@ import { incrementCounter } from '../vuex/actions.js';
 import Designer from './template/Designer.vue';
 import Editor from './template/Editor.vue';
 
+import PanelTab from './ui/Panel/PanelTab.vue';
+
+Vue.partial('my-tab', PanelTab);
+
+console.log(Vue.partial('my-tab'));
+
 export default {
 
   components: {
@@ -34,19 +40,15 @@ export default {
 
       tabs: {
         tabsHeader: [{
-          header: {
-            title: 'form.vue [设计]',
-            src: '',
-            type: 'designer',
-            active: true
-          }
+          title: 'form.vue [设计]',
+          src: '',
+          type: 'Designer',
+          active: true
         }, {
-          header: {
-            title: 'form.vue',
-            src: '',
-            type: 'code',
-            active: false
-          }
+          title: 'form.vue',
+          src: '',
+          type: 'Editor',
+          active: false
         }],
 
         tabsPanel: {
@@ -67,7 +69,9 @@ export default {
         name: 'gder',
       },
 
-      codes: '// TO DO'
+      codes: '// TO DO',
+
+      currentView: 'Designer'
 
     }
   },
@@ -122,6 +126,18 @@ export default {
 
     startCoding: function() {
       window.startCoding(this.designer);
+    },
+
+    tabChanged: function(tab) {
+
+      this.currentView = tab.type;
+
+      if(this.currentView == 'Editor') {
+        this.startCoding();
+      }
+
+      console.log(this.currentView);
+
     }
 
   }

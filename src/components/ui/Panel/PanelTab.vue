@@ -17,10 +17,15 @@
 				default () {
 					return false;
 				}
+			},
+
+			title: {
+				type: String,
+				default () {
+					return ''
+				}
 			}
-
 		}
-
 	}
 
 </script>
