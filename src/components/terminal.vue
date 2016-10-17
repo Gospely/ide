@@ -1,42 +1,144 @@
 <template>
 
 	<div class="terminal-panel">
-		<pre class="terminaljs" data-columns="80"></pre>
+        <div id="terminal-container"></div>
 	</div>
 
 </template>
 
 <script>
 	
-
 	export default {
 
 		data () {
 
 			return {
-				dataColumns: 80
+				dataRows: 80
 			}
 
 		},
 
 		ready () {
 
-			var containers = document.getElementsByClassName('terminaljs'),
-				socket = io('http://120.76.235.234:8888/pty'), term, stream;
-			ss.forceBase64 = true;
+			var term,
+			    protocol,
+			    socketURL,
+			    socket,
+			    pid,
+			    charWidth,
+			    charHeight,
+			    port = 3000,
+			    domain = 'gospely.com',
+			    baseUrl = 'http://' + domain + ':' + port;
 
-			var dataColumns = parseInt($('.terminaljs').height() / 13);
+			var terminalContainer = document.getElementById('terminal-container');
 
-			this.$set('dataColumns', dataColumns);
+			function setTerminalSize () {
 
-			for(var i = 0; i < containers.length; i++) {
-				containers[i].tabindex = 0;
-				term = new Terminal(containers[i].dataset);
-				stream = ss.createStream({decodeStrings: false, encoding: 'utf-8'});
-				ss(socket).emit('new', stream, containers[i].dataset);
-				if(containers[i].dataset.exec)
-					stream.write(containers[i].dataset.exec + "\n");
-				stream.pipe(term).dom(containers[i]).pipe(stream);
+				var termWidth = parseInt($('#form').width()),
+					termHeight = parseInt($('#form').height());
+
+			  	var cols = Math.ceil(termWidth / 8),
+			      	rows = Math.ceil(termHeight / 12),
+			      	width = (cols * charWidth).toString() + 'px',
+			      	height = (rows * charHeight).toString() + 'px';
+
+			    console.log(cols, rows, termWidth, termHeight);
+
+			  	terminalContainer.style.width = width;
+			  	terminalContainer.style.height = height;
+			  	term.resize(cols, rows);
+			}
+
+			createTerminal();
+
+			function createTerminal() {
+			  	// Clean terminal
+			  	while (terminalContainer.children.length) {
+			    	terminalContainer.removeChild(terminalContainer.children[0]);
+			  	}
+			  	term = new Terminal({
+			    	cursorBlink: false
+			  	});
+			  	term.on('resize', function (size) {
+			    	if (!pid) {
+			      	return;
+			    	}
+			    	var cols = size.cols,
+			        	rows = size.rows,
+			        	url = baseUrl + '/terminals/' + pid + '/size?cols=' + cols + '&rows=' + rows;
+
+			    	fetch(url, {method: 'POST'});
+			  	});
+			  	protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+			  	socketURL = protocol + domain + ':' + port + '/terminals/';
+
+			  	term.open(terminalContainer);
+			  	// term.fit();
+
+			  	var cols = term.cols,
+			      	rows = term.rows;
+
+			  	fetch(baseUrl + '/terminals?cols=' + cols + '&rows=' + rows, {method: 'POST'}).then(function (res) {
+
+			    	charWidth = Math.ceil(term.element.offsetWidth / cols);
+			    	charHeight = Math.ceil(term.element.offsetHeight / rows);
+
+			    	res.text().then(function (pid) {
+				      	window.pid = pid;
+				      	socketURL += pid;
+				      	socket = new WebSocket(socketURL);
+				      	socket.onopen = runRealTerminal;
+				      	socket.onclose = runFakeTerminal;
+				      	socket.onerror = runFakeTerminal;
+	      				setTerminalSize();
+				    });
+			  });
+			}
+
+
+			function runRealTerminal() {
+			  	term.attach(socket);
+			  	term._initialized = true;
+			}
+
+			function runFakeTerminal() {
+			  	if (term._initialized) {
+			    	return;
+			  	}
+
+			  	term._initialized = true;
+
+				var shellprompt = '$ ';
+
+			  	term.prompt = function () {
+			    	term.write('\r\n' + shellprompt);
+			  	};
+
+			  	term.writeln('欢迎使用 Gospel IDE 终端');
+			  	term.writeln('');
+			  	term.prompt();
+
+			  	term.on('key', function (key, ev) {
+			    	var printable = (
+			      		!ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey
+			    	);
+
+			    	if (ev.keyCode == 13) {
+			      		term.prompt();
+			    	} else if (ev.keyCode == 8) {
+			     		// Do not delete the prompt
+			      		if (term.x > 2) {
+			        		term.write('\b \b');
+			      		}
+			    	} else if (printable) {
+			      		term.write(key);
+			    	}
+			  	});
+
+			  	term.on('paste', function (data, ev) {
+			    	term.write(data);
+			  	});
 			}
 
 		}
@@ -48,15 +150,6 @@
 
 <style>
 
-	.terminaljs {
-		background: black;
-		color: white;
-		font-family: Courier, monospace;
-		display:inline-block;
-		width: 100%;
-		height: 100%;
-	}
-
 	.terminal-panel {
 		width: 100%;
 		height: calc(100% - 16px);
@@ -64,6 +157,21 @@
 
 	pre {
 		margin: 0px;
+	}
+
+	#terminal-container {
+	    width: 100%;
+	    height: 100%;
+	    margin: 0 auto;
+	}
+
+	#terminal-container .terminal {
+	    background-color: #111;
+	    color: #fafafa;
+	}
+
+	#terminal-container .terminal:focus .terminal-cursor {
+	    background-color: #fafafa;
 	}
 
 </style>

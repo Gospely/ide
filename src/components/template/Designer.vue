@@ -141,9 +141,9 @@
   .loader {
     position: absolute;
     top: 50%;
-    width: 100px;
-    height: 100px;
     left: 50%;
+    margin-left: -16px;
+    margin-top: -16px;
   }
 
 </style>
