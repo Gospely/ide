@@ -20,11 +20,13 @@
       </forms>
 
     </div>
+    
     <forms :show-title="false" v-bind:styles="designStyles" fid="form">
       <section slot="content" class="design">
         <design-panel></design-panel>
       </section>
     </forms>
+
     <div class="column is-2" style="margin-right: 2px;">
       <forms v-bind:styles="attrStyles" fid="attributes">
         <span slot="title">属性</span>
@@ -32,12 +34,12 @@
       </forms>
     </div>
 
-  <forms :show-title="false" v-show="false" v-bind:styles="consoleStyles" fid="console">
-    <span slot="title">控制台</span>
-    <div slot="content">
-      <terminal></terminal>
-    </div>
-  </forms>
+<!--     <forms :show-title="true" v-show="true" v-bind:styles="consoleStyles" fid="console">
+      <span slot="title">控制台</span>
+      <div slot="content">
+        <terminal></terminal>
+      </div>
+    </forms> -->
 
   </div>
 
@@ -70,7 +72,8 @@ export default {
       },
 
       designStyles: {
-        width: '100%'
+        'width': '100%',
+        'margin-right': '-1px'
       },
 
       attrStyles: {
@@ -192,6 +195,11 @@ export default {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  height: 100%;
+}
+
+.form-content {
+  /*height: 100%;*/
 }
 
 .ui-snackbar {

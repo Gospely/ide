@@ -440,6 +440,7 @@ export default {
 		/*position: absolute;*/
 		z-index: 60000;
 		border: 1px solid #dde1e4;
+		margin-right: -1px;
 	}
 
 	.form-control {

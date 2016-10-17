@@ -370,11 +370,11 @@ body {
 }
 
 .tooltip-element.ui-tooltip-theme {
-    z-index: 65535!important;
+  z-index: 65535!important;
 }
 
 .ui-toolbar-raised {
-    box-shadow: 0 0 1px rgba(0,0,0,.1),0 1px 1px rgba(0,0,0,.1)!important;
+  box-shadow: 0 0 1px rgba(0,0,0,.1),0 1px 1px rgba(0,0,0,.00000001) !important;
 }
 
 .ui-collapsible-header {

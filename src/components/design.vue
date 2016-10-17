@@ -10,6 +10,10 @@
       <editor :codes.sync="codes"></editor>
     </panel-tab>
 
+    <panel-tab :active="false" title="控制台">
+      <terminal></terminal>
+    </panel-tab>
+
   </panel>
 
 </template>
@@ -22,17 +26,14 @@ import { incrementCounter } from '../vuex/actions.js';
 import Designer from './template/Designer.vue';
 import Editor from './template/Editor.vue';
 
-import PanelTab from './ui/Panel/PanelTab.vue';
-
-Vue.partial('my-tab', PanelTab);
-
-console.log(Vue.partial('my-tab'));
+import terminal from './terminal.vue';
 
 export default {
 
   components: {
     Designer,
-    Editor
+    Editor,
+    terminal
   },
 
   data () {
@@ -48,6 +49,11 @@ export default {
           title: 'form.vue',
           src: '',
           type: 'Editor',
+          active: false
+        }, {
+          title: '控制台',
+          src: '',
+          type: 'Terminal',
           active: false
         }],
 
@@ -147,39 +153,8 @@ export default {
 
 <style>
 
-  #editor {
-    width: 100%;
-    height: 100vh;
-    /*height: 100%;*/
-  }
-
   .drop {
     z-index: 65535;
-  }
-
-  .designer-wrapper {
-    text-align: center;
-    line-height: 50%;
-    background: -webkit-linear-gradient(left top, #dde9f2 , #efefef); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(bottom right, #dde9f2, #efefef); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(bottom right, #dde9f2, #efefef); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to bottom right, #dde9f2 , #efefef); /* 标准的语法 */
-    padding: 16px;
-  }
-
-  .designer-wrapper .designer {
-    border: 1px solid #dde1e4;
-    box-shadow: 0 1px 6px rgba(0,0,0,.33);
-    background: rgb(255, 255, 255);
-    line-height: 50%;
-  }
-
-  .loader {
-    position: absolute;
-    top: 50%;
-    width: 100px;
-    height: 100px;
-    left: 50%;
   }
 
   .design {

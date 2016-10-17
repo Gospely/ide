@@ -1,5 +1,5 @@
 <template>
-    <div class="designer-wrapper">
+    <div class="designer-wrapper" v-bind:style="designerStyle">
         <div class="loader">
           <ui-progress-circular :show="loading" color="multi-color">
           </ui-progress-circular>
@@ -37,7 +37,11 @@
 
 			return {
 
-			    loading: true
+			    loading: true,
+
+			    designerStyle: {
+			    	width: '100%'
+			    }
 
 			}
 
@@ -45,6 +49,15 @@
 
 		ready () {
 			this.$get('init')();
+
+			var editorHeight = $('#form').height();
+
+			var self = this;
+
+			this.$nextTick(function() {
+				self.$set('designerStyle.height', (editorHeight - 30) + 'px');
+				console.log(self.$get('designerStyle').height);
+			});
 		},
 
 		methods: {
@@ -107,5 +120,30 @@
 </script>
 
 <style>
+
+  .designer-wrapper {
+    background: -webkit-linear-gradient(left top, #dde9f2 , #efefef); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #dde9f2, #efefef); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #dde9f2, #efefef); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #dde9f2 , #efefef); /* 标准的语法 */
+    display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+
+  .designer-wrapper .designer {
+    border: 1px solid #dde1e4;
+    box-shadow: 0 1px 6px rgba(0,0,0,.33);
+    background: rgb(255, 255, 255);
+    line-height: 50%;
+  }
+
+  .loader {
+    position: absolute;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+  }
 
 </style>

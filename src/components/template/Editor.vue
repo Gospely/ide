@@ -1,6 +1,6 @@
 <template>
 
-    <div id="editor">{{codes}}</div>
+    <div id="editor" v-bind:style="editorStyle">{{codes}}</div>
 
 </template>
 
@@ -27,13 +27,27 @@
 
 			window.startCoding = self.$get('startCoding');
 
+			var editorHeight = $('#form').height();
+
+			var self = this;
+
+			this.$nextTick(function() {
+				self.$set('editorStyle.height', (editorHeight - 30) + 'px');
+				console.log(self.$get('editorStyle').height);
+			});
+
 		},
 
 		data () {
 
 			return {
 
-		      	editor: ''
+		      	editor: '',
+
+		      	editorStyle: {
+		      		width: '100%',
+		      		height: ''
+		      	}
 
 			}
 

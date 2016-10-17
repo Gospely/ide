@@ -11,11 +11,23 @@
 
 	export default {
 
+		data () {
+
+			return {
+				dataColumns: 80
+			}
+
+		},
+
 		ready () {
 
 			var containers = document.getElementsByClassName('terminaljs'),
 				socket = io('http://120.76.235.234:8888/pty'), term, stream;
 			ss.forceBase64 = true;
+
+			var dataColumns = parseInt($('.terminaljs').height() / 13);
+
+			this.$set('dataColumns', dataColumns);
 
 			for(var i = 0; i < containers.length; i++) {
 				containers[i].tabindex = 0;

@@ -135,6 +135,7 @@
 
 .panel-item {
 	display: none;
+	height: 100%;
 }
 
 .panel-item.active {
@@ -195,6 +196,10 @@
 .panel-header-item.active {
 	background: #2196f3!important;
 	color: #ffffff;
+}
+
+.panel-body {
+	/*height: 100%;*/
 }
 
 </style>
