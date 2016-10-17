@@ -39,7 +39,7 @@
 					termHeight = parseInt($('#form').height());
 
 			  	var cols = Math.ceil(termWidth / 8),
-			      	rows = Math.ceil(termHeight / 12),
+			      	rows = Math.ceil((termHeight - 90) / 12),
 			      	width = (cols * charWidth).toString() + 'px',
 			      	height = (rows * charHeight).toString() + 'px';
 
