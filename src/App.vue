@@ -1409,4 +1409,14 @@ body {
 .panel-close .ui-icon {
   font-size: 10px!important;
 }
+
+.notification.noty {
+    position: absolute;
+    width: 280px;
+    right: 20px;
+    top: 20px;
+    z-index: 65535;
+    color: rgb(255, 255, 255);
+}
+
 </style>

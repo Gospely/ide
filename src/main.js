@@ -12,8 +12,14 @@ import stores from './vuex/stores.js';
 
 import $ from 'jquery';
 
+import 'animate.css';
+
 import Panel from './components/ui/Panel/Panel.vue';
 import PanelTab from './components/ui/Panel/PanelTab.vue';
+
+import util from './util/index.js';
+
+window.util = util;
 
 //加载keen-ui
 Vue.use(Keen);
@@ -28,7 +34,7 @@ Vue.component('panel-tab', PanelTab);
 Vue.use(require('vue-resource'));
 
 //初始化AJAX头
-Vue.http.options.root = 'http://localhost';
+Vue.http.options.root = 'http://api.gospely.com';
 Vue.http.headers.common['Authorization'] = 'Basic YXBpOnBhc3N3b3Jk';
 
 //----------------------------初始化AJAX----------------------------

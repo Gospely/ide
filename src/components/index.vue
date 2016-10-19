@@ -82,7 +82,9 @@ export default {
 
       consoleStyles: {
         width: '100%'
-      }
+      },
+
+      treeNode: []
     }
   },
 
@@ -115,29 +117,64 @@ export default {
       }
     };
 
-    var zNodes =[
-      { id:1, pId:0, name:"随意拖拽 1", open:true},
-      { id:11, pId:1, name:"随意拖拽 1-1"},
-      { id:12, pId:1, name:"随意拖拽 1-2"},
-      { id:121, pId:12, name:"随意拖拽 1-2-1"},
-      { id:122, pId:12, name:"随意拖拽 1-2-2"},
-      { id:123, pId:12, name:"随意拖拽 1-2-3"},
-      { id:13, pId:1, name:"禁止拖拽 1-3", open:true, drag:false},
-      { id:131, pId:13, name:"禁止拖拽 1-3-1", drag:false},
-      { id:132, pId:13, name:"禁止拖拽 1-3-2", drag:false},
-      { id:132, pId:13, name:"禁止拖拽 1-3-3", drag:false},
-      { id:2, pId:0, name:"禁止子节点移走 2", open:true, childOuter:false},
-      { id:21, pId:2, name:"我不想成为父节点 2-1", dropInner:false},
-      { id:22, pId:2, name:"我不要成为根节点 2-2", dropRoot:false},
-      { id:23, pId:2, name:"拖拽试试看 2-3"},
-      { id:3, pId:0, name:"禁止子节点排序/增加 3", open:true, childOrder:false, dropInner:false},
-      { id:31, pId:3, name:"随意拖拽 3-1"},
-      { id:32, pId:3, name:"随意拖拽 3-2"},
-      { id:33, pId:3, name:"随意拖拽 3-3"}
-    ];
+    this.$nextTick(() => {
 
-    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-    $("#callbackTrigger").bind("change", {}, setTrigger);  
+      $Model.FSService.ls().then( (res) => {
+
+        var response = res.data,
+            fileTree = response.data;
+
+        if(response.code == 200) {
+
+          var result = [];
+
+          for (var i = 0; i < response.fields.length; i++) {
+            var field = response.fields[i];
+
+            var node = {
+              id: field.id,
+              name: field.name,
+              open: false,
+              path: field.path,
+              pId: 0
+            };
+
+            result.push(node);
+
+            if(field.sub.length != 0) {
+
+              for (var j = 0; j < field.sub.length; j++) {
+                var sub = field.sub[j];
+
+                node = {
+                  id: sub.id,
+                  name: sub.name,
+                  path: sub.path,
+                  pId: field.id
+                }
+
+                result.push(node);
+
+              };
+
+            }
+
+          };
+
+          this.$set('treeNode', result);
+          $.fn.zTree.init($("#treeDemo"), setting, this.$get('treeNode'));
+          $("#callbackTrigger").bind("change", {}, setTrigger);  
+
+        }else {
+          util.alert(response.message);
+        }
+
+      }).catch( (error) => {
+        util.alert('文件树请求失败');
+      });
+
+    });
+
   },
 
   components: {
