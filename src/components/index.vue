@@ -312,4 +312,33 @@ export default {
     margin-top: 1px;
   }
 
+  #data { margin-left:320px; }
+  #data textarea { margin:0; padding:0; height:100%; width:100%; border:0; background:white; display:block; line-height:18px; resize:none; }
+  #data, #code { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
+
+  #file-tree .folder { background:url(../assets/file_sprite.png) right bottom no-repeat; }
+  #file-tree .file { background:url(../assets/file_sprite.png) 0 0 no-repeat; }
+  #file-tree .file-pdf { background-position: -32px 0 }
+  #file-tree .file-as { background-position: -36px 0 }
+  #file-tree .file-c { background-position: -72px -0px }
+  #file-tree .file-iso { background-position: -108px -0px }
+  #file-tree .file-htm, #file-tree .file-html, #file-tree .file-xml, #file-tree .file-xsl { background-position: -126px -0px }
+  #file-tree .file-cf { background-position: -162px -0px }
+  #file-tree .file-cpp { background-position: -216px -0px }
+  #file-tree .file-cs { background-position: -236px -0px }
+  #file-tree .file-sql { background-position: -272px -0px }
+  #file-tree .file-xls, #file-tree .file-xlsx { background-position: -362px -0px }
+  #file-tree .file-h { background-position: -488px -0px }
+  #file-tree .file-crt, #file-tree .file-pem, #file-tree .file-cer { background-position: -452px -18px }
+  #file-tree .file-php { background-position: -108px -18px }
+  #file-tree .file-jpg, #file-tree .file-jpeg, #file-tree .file-png, #file-tree .file-gif, #file-tree .file-bmp { background-position: -126px -18px }
+  #file-tree .file-ppt, #file-tree .file-pptx { background-position: -144px -18px }
+  #file-tree .file-rb { background-position: -180px -18px }
+  #file-tree .file-text, #file-tree .file-txt, #file-tree .file-md, #file-tree .file-log, #file-tree .file-htaccess { background-position: -254px -18px }
+  #file-tree .file-doc, #file-tree .file-docx { background-position: -362px -18px }
+  #file-tree .file-zip, #file-tree .file-gz, #file-tree .file-tar, #file-tree .file-rar { background-position: -416px -18px }
+  #file-tree .file-js { background-position: -434px -18px }
+  #file-tree .file-css { background-position: -144px -0px }
+  #file-tree .file-fla { background-position: -398px -0px }
+
 </style>
