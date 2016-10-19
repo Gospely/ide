@@ -156,6 +156,8 @@ export default {
       }).done(function (d) {
         data.instance.set_id(data.node, d.id);
       });
+
+      this.deleteFileConfirm = true;
     },
 
     initFileTree: function() {
@@ -234,17 +236,18 @@ export default {
         })
         .on('delete_node.jstree', function (e, data) {
           self.deleteFileConfirm = true;
+          self.fileToRemove.e = e;
+          self.fileToRemove.data = data;
         })
         .on('create_node.jstree', function (e, data) {
           console.log(e, data);
 
           var type = data.node.type;
+          var parent = data.node.parents.length > 2 ? data.node.parent : '';
 
           var typeObj = {
 
             default: function() {
-
-              var parent = data.node.parents.length > 2 ? data.node.parent : '';
 
               $.post(self.apiBase + 'fs/mkdir/', {
                 dirName: parent + '/' + data.node.text
@@ -259,7 +262,7 @@ export default {
             },
 
             file: function() {
-              $.get(self.apiBase + 'fs/write', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
+              $.post(self.apiBase + 'fs/write', { 'fileName' : parent + '/' + data.node.text })
               .done(function (d) {
                 data.instance.set_id(data.node, d.id);
               })
@@ -289,7 +292,10 @@ export default {
             });
         })
         .on('move_node.jstree', function (e, data) {
-          $.get('?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent })
+
+          console.log('move', data);
+
+          $.post(self.apiBase + 'fs/move', { 'fileName' : data.node.id, 'newFileName' : data.parent, 'move': true })
             .done(function (d) {
               //data.instance.load_node(data.parent);
               data.instance.refresh();
