@@ -12,7 +12,7 @@
               <ui-tab header="内容">
               </ui-tab>
               <ui-tab header="文件">
-                <div v-bind:id="fileTreeSelector"></div>
+                <div v-bind:id="fileTreeSelector" class="tree-cls"></div>
               </ui-tab>
           </ui-tabs>
         </div>
@@ -79,7 +79,9 @@ export default {
       },
 
       files: [],
-      fileTreeSelector: 'file-tree'
+      fileTreeSelector: 'file-tree',
+
+      apiBase: 'http://api.gospely.com/'
     }
   },
 
@@ -121,11 +123,13 @@ export default {
 
     initFileTree: function() {
 
+      var self = this;
+
       $('#' + this.fileTreeSelector)
         .jstree({
           'core' : {
             'data' : {
-              'url' : 'http://api.gospely.com/fs/list/optional/',
+              'url' : self.apiBase + 'fs/list/optional/',
               'data' : function (node) {
                 return { 'id' : node.id == '#' ? '' : node.id };
               }
@@ -207,9 +211,12 @@ export default {
             });
         })
         .on('rename_node.jstree', function (e, data) {
-          $.get('?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
+          $.post(self.apiBase + 'fs/rename', {
+              fileName: data.node.id,
+              newFileName: data.node.original.folder + data.text
+            })
             .done(function (d) {
-              data.instance.set_id(data.node, d.id);
+              data.instance.set_id(data.node, d.fields.id);
             })
             .fail(function () {
               data.instance.refresh();
@@ -237,7 +244,7 @@ export default {
         })
         .on('changed.jstree', function (e, data) {
           if(data && data.selected && data.selected.length) {
-            $.get('http://api.gospely.com/fs/list/optional/' + data.selected, function (d) {
+            $.get(self.apiBase + 'fs/list/optional/' + data.selected, function (d) {
               if(d && typeof d.type !== 'undefined') {
                 $('#data .content').hide();
                 switch(d.type) {
@@ -316,29 +323,29 @@ export default {
   #data textarea { margin:0; padding:0; height:100%; width:100%; border:0; background:white; display:block; line-height:18px; resize:none; }
   #data, #code { font: normal normal normal 12px/18px 'Consolas', monospace !important; }
 
-  #file-tree .folder { background:url(../assets/file_sprite.png) right bottom no-repeat; }
-  #file-tree .file { background:url(../assets/file_sprite.png) 0 0 no-repeat; }
-  #file-tree .file-pdf { background-position: -32px 0 }
-  #file-tree .file-as { background-position: -36px 0 }
-  #file-tree .file-c { background-position: -72px -0px }
-  #file-tree .file-iso { background-position: -108px -0px }
-  #file-tree .file-htm, #file-tree .file-html, #file-tree .file-xml, #file-tree .file-xsl { background-position: -126px -0px }
-  #file-tree .file-cf { background-position: -162px -0px }
-  #file-tree .file-cpp { background-position: -216px -0px }
-  #file-tree .file-cs { background-position: -236px -0px }
-  #file-tree .file-sql { background-position: -272px -0px }
-  #file-tree .file-xls, #file-tree .file-xlsx { background-position: -362px -0px }
-  #file-tree .file-h { background-position: -488px -0px }
-  #file-tree .file-crt, #file-tree .file-pem, #file-tree .file-cer { background-position: -452px -18px }
-  #file-tree .file-php { background-position: -108px -18px }
-  #file-tree .file-jpg, #file-tree .file-jpeg, #file-tree .file-png, #file-tree .file-gif, #file-tree .file-bmp { background-position: -126px -18px }
-  #file-tree .file-ppt, #file-tree .file-pptx { background-position: -144px -18px }
-  #file-tree .file-rb { background-position: -180px -18px }
-  #file-tree .file-text, #file-tree .file-txt, #file-tree .file-md, #file-tree .file-log, #file-tree .file-htaccess { background-position: -254px -18px }
-  #file-tree .file-doc, #file-tree .file-docx { background-position: -362px -18px }
-  #file-tree .file-zip, #file-tree .file-gz, #file-tree .file-tar, #file-tree .file-rar { background-position: -416px -18px }
-  #file-tree .file-js { background-position: -434px -18px }
-  #file-tree .file-css { background-position: -144px -0px }
-  #file-tree .file-fla { background-position: -398px -0px }
+  .tree-cls .folder { background:url(../assets/file_sprite.png) right bottom no-repeat; }
+  .tree-cls .file { background:url(../assets/file_sprite.png) 0 0 no-repeat; }
+  .tree-cls .file-pdf { background-position: -32px 0 }
+  .tree-cls .file-as { background-position: -36px 0 }
+  .tree-cls .file-c { background-position: -72px -0px }
+  .tree-cls .file-iso { background-position: -108px -0px }
+  .tree-cls .file-htm, .tree-cls .file-html, .tree-cls .file-xml, .tree-cls .file-xsl { background-position: -126px -0px }
+  .tree-cls .file-cf { background-position: -162px -0px }
+  .tree-cls .file-cpp { background-position: -216px -0px }
+  .tree-cls .file-cs { background-position: -236px -0px }
+  .tree-cls .file-sql { background-position: -272px -0px }
+  .tree-cls .file-xls, .tree-cls .file-xlsx { background-position: -362px -0px }
+  .tree-cls .file-h { background-position: -488px -0px }
+  .tree-cls .file-crt, .tree-cls .file-pem, .tree-cls .file-cer { background-position: -452px -18px }
+  .tree-cls .file-php { background-position: -108px -18px }
+  .tree-cls .file-jpg, .tree-cls .file-jpeg, .tree-cls .file-png, .tree-cls .file-gif, .tree-cls .file-bmp { background-position: -126px -18px }
+  .tree-cls .file-ppt, .tree-cls .file-pptx { background-position: -144px -18px }
+  .tree-cls .file-rb { background-position: -180px -18px }
+  .tree-cls .file-text, .tree-cls .file-txt, .tree-cls .file-md, .tree-cls .file-log, .tree-cls .file-htaccess { background-position: -254px -18px }
+  .tree-cls .file-doc, .tree-cls .file-docx { background-position: -362px -18px }
+  .tree-cls .file-zip, .tree-cls .file-gz, .tree-cls .file-tar, .tree-cls .file-rar { background-position: -416px -18px }
+  .tree-cls .file-js { background-position: -434px -18px }
+  .tree-cls .file-css { background-position: -144px -0px }
+  .tree-cls .file-fla { background-position: -398px -0px }
 
 </style>
