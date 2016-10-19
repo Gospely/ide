@@ -13,6 +13,15 @@
               </ui-tab>
               <ui-tab header="文件">
                 <div v-bind:id="fileTreeSelector" class="tree-cls"></div>
+
+                <ui-confirm
+                    header="删除文件" type="danger" confirm-button-text="删除"
+                    confirm-button-icon="delete" deny-button-text="取消" @confirmed="deleteFileConfirmed"
+                    @denied="deleteFileDenied" :show.sync="deleteFileConfirm" close-on-confirm
+                >
+                    你确认要删除此文件吗？（无法恢复）
+                </ui-confirm>
+
               </ui-tab>
           </ui-tabs>
         </div>
@@ -78,10 +87,16 @@ export default {
         width: '100%'
       },
 
-      files: [],
       fileTreeSelector: 'file-tree',
 
-      apiBase: 'http://api.gospely.com/'
+      apiBase: 'http://api.gospely.com/',
+
+      deleteFileConfirm: false,
+
+      fileToRemove: {
+        e: {},
+        data: {}
+      }
     }
   },
 
@@ -89,23 +104,23 @@ export default {
 
     this.$nextTick(() => {
 
-      $Model.FSService.ls().then( (res) => {
+      // $Model.FSService.ls().then( (res) => {
 
-        var response = res.data,
-            fileTree = response.data;
+      //   var response = res.data,
+      //       fileTree = response.data;
 
-        if(response.code == 200) {
+      //   if(response.code == 200) {
 
-          this.$set('files', fileTree);
-          this.$get('initFileTree')(); 
 
-        }else {
-          util.alert(response.message);
-        }
+      //   }else {
+      //     util.alert(response.message);
+      //   }
 
-      }).catch( (error) => {
-        util.alert('文件树请求失败');
-      });
+      // }).catch( (error) => {
+      //   util.alert('文件树请求失败');
+      // });
+//
+      this.$get('initFileTree')(); 
 
     });
 
@@ -120,6 +135,28 @@ export default {
   },
 
   methods: {
+
+    deleteFileConfirmed: function() {
+      this.removeFile(this.fileToRemove.e, this.fileToRemove.data);
+    },
+
+    deleteFileDenied: function() {
+
+    },
+
+    removeFile: function(e, data) {
+
+      var parent = data.node.parents.length > 2 ? data.node.parent : '',
+          self = this;
+
+      $.post(self.apiBase + 'fs/rmdir', { 'dirName' : parent + '/' + data.node.text })
+      .fail(function () {
+        data.instance.refresh();
+        util.alert('删除文件夹失败');
+      }).done(function (d) {
+        data.instance.set_id(data.node, d.id);
+      });
+    },
 
     initFileTree: function() {
 
@@ -185,8 +222,8 @@ export default {
             }
           },
           'types' : {
-            'default' : { 'icon' : 'folder' },
-            'file' : { 'valid_children' : [], 'icon' : 'file' }
+            'default' : { 'icon' : 'folder', 'text': 'new_folder'},
+            'file' : { 'valid_children' : [], 'icon' : 'file', 'text': 'untitled' }
           },
           'unique' : {
             'duplicate' : function (name, counter) {
@@ -196,19 +233,47 @@ export default {
           'plugins' : ['state','dnd','sort','types','contextmenu','unique']
         })
         .on('delete_node.jstree', function (e, data) {
-          $.get('?operation=delete_node', { 'id' : data.node.id })
-            .fail(function () {
-              data.instance.refresh();
-            });
+          self.deleteFileConfirm = true;
         })
         .on('create_node.jstree', function (e, data) {
-          $.get('?operation=create_node', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
-            .done(function (d) {
-              data.instance.set_id(data.node, d.id);
-            })
-            .fail(function () {
-              data.instance.refresh();
-            });
+          console.log(e, data);
+
+          var type = data.node.type;
+
+          var typeObj = {
+
+            default: function() {
+
+              var parent = data.node.parents.length > 2 ? data.node.parent : '';
+
+              $.post(self.apiBase + 'fs/mkdir/', {
+                dirName: parent + '/' + data.node.text
+              })
+              .done(function (d) {
+                data.instance.set_id(data.node, d.id);
+              })
+              .fail(function () {
+                data.instance.refresh();
+                util.alert('创建文件夹失败');
+              });
+            },
+
+            file: function() {
+              $.get(self.apiBase + 'fs/write', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
+              .done(function (d) {
+                data.instance.set_id(data.node, d.id);
+              })
+              .fail(function () {
+                data.instance.refresh();
+                util.alert('创建文件失败');
+              });
+            }
+
+          }
+
+          console.log(type);
+
+          typeObj[type]();
         })
         .on('rename_node.jstree', function (e, data) {
           $.post(self.apiBase + 'fs/rename', {
@@ -220,6 +285,7 @@ export default {
             })
             .fail(function () {
               data.instance.refresh();
+              util.alert('重命名文件失败');
             });
         })
         .on('move_node.jstree', function (e, data) {
@@ -230,6 +296,7 @@ export default {
             })
             .fail(function () {
               data.instance.refresh();
+              util.alert('移动文件失败');
             });
         })
         .on('copy_node.jstree', function (e, data) {
@@ -240,6 +307,7 @@ export default {
             })
             .fail(function () {
               data.instance.refresh();
+              util.alert('复制文件失败');
             });
         })
         .on('changed.jstree', function (e, data) {
