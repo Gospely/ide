@@ -163,7 +163,8 @@ export default {
 
     initFileTree: function() {
 
-      var self = this;
+      var self = this,
+          preClickTimestamp = 0;
 
       $('#' + this.fileTreeSelector)
         .jstree({
@@ -315,7 +316,35 @@ export default {
               util.alert('复制文件失败');
             });
         })
+        .on('select_node.jstree', function(e, data) {
+          var currentClickTimestamp = e.timeStamp;
+
+          console.log('self');
+
+          console.log(currentClickTimestamp, preClickTimestamp);
+
+          if(currentClickTimestamp - preClickTimestamp <= 200) {
+            //dbl click
+
+            console.log('dbl click');
+
+            $.post(self.apiBase + 'fs/read', {fileName: data.node.id})
+              .done(function(d) {
+                util.pin(d);
+
+                console.log(d);
+              })
+              .fail(function() {
+                data.instance.refresh();
+                util.alert('请求文件数据失败');
+              });
+          }
+
+          preClickTimestamp = e.timeStamp;
+
+        })
         .on('changed.jstree', function (e, data) {
+          console.log('changed.jstree', e, data);
           if(data && data.selected && data.selected.length) {
             $.get(self.apiBase + 'fs/list/optional/' + data.selected, function (d) {
               if(d && typeof d.type !== 'undefined') {
