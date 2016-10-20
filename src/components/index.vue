@@ -154,6 +154,7 @@ export default {
         data.instance.refresh();
         util.alert('删除文件夹失败');
       }).done(function (d) {
+        util.pin(d);
         data.instance.set_id(data.node, d.id);
       });
 
@@ -251,6 +252,7 @@ export default {
                 dirName: parent + '/' + data.node.text
               })
               .done(function (d) {
+                util.pin(d);
                 data.instance.set_id(data.node, d.id);
               })
               .fail(function () {
@@ -262,6 +264,7 @@ export default {
             file: function() {
               $.post(self.apiBase + 'fs/write', { 'fileName' : parent + '/' + data.node.text })
               .done(function (d) {
+                util.pin(d);
                 data.instance.set_id(data.node, d.id);
               })
               .fail(function () {
@@ -279,6 +282,7 @@ export default {
               newFileName: data.node.original.folder + data.text
             })
             .done(function (d) {
+              util.pin(d);
               data.instance.set_id(data.node, d.fields.id);
             })
             .fail(function () {
@@ -290,6 +294,7 @@ export default {
           $.post(self.apiBase + 'fs/move', { 'fileName' : data.node.id, 'newFileName' : data.parent, 'move': true })
             .done(function (d) {
               //data.instance.load_node(data.parent);
+              util.pin(d);
               data.instance.refresh();
             })
             .fail(function () {
@@ -302,6 +307,7 @@ export default {
           $.post(self.apiBase + 'fs/copy', { 'file' : data.original.id, 'newFile' : data.parent })
             .done(function (d) {
               //data.instance.load_node(data.parent);
+              util.pin(d);
               data.instance.refresh();
             })
             .fail(function () {

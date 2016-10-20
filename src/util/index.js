@@ -29,6 +29,12 @@ export default {
 
     error (msg) {
     	this.alert(msg, 'danger');
+    },
+
+    pin: function(data) {
+    	if(data.code != 200) {
+    		this.alert(data.message);
+    	}
     }
 
 }
