@@ -41,13 +41,6 @@
           <attr-panel slot="content"></attr-panel>
       </forms>
     </div>
-<!-- 
-    <forms :show-title="true" v-show="true" v-bind:styles="consoleStyles" fid="console">
-      <span slot="title">控制台</span>
-      <div slot="content">
-        <terminal :link="false"></terminal>
-      </div>
-    </forms> -->
 
   </div>
 
@@ -96,6 +89,7 @@ export default {
         e: {},
         data: {}
       }
+
     }
   },
 

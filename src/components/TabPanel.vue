@@ -1,16 +1,6 @@
 <template>
 
-  <panel @tabchanged="tabChanged" :panels.sync="tabs.panels">
-    
-<!--     <panel-tab :active="true" title="form.vue [设计]">
-      <designer :designer.sync="designer"></designer>
-    </panel-tab>
-
-    <panel-tab :active="false" title="form.vue">
-      <editor :codes.sync="codes"></editor>
-    </panel-tab>-->
-
-  </panel>
+  <panel @tabchanged="tabChanged" :panels.sync="tabs.panels"></panel>
 
 </template>
 
@@ -22,6 +12,7 @@ import { incrementCounter } from '../vuex/actions.js';
 export default {
 
   components: {
+
   },
 
   data () {
@@ -63,21 +54,6 @@ export default {
         }
       },
 
-      designer: {
-        id: 'gospelDesignerArea',
-        context: '',
-        dom: '',
-        class: 'designer',
-        wrapper: '.designer-wrapper',
-        container: '.gospel-designer-area',
-        src: './static/designer.html',
-        width: '375',
-        height: '667',
-        name: 'gder',
-      },
-
-      codes: '// TO DO',
-
       currentView: 'Designer'
 
     }
@@ -93,27 +69,6 @@ export default {
       $('.cpList li').each(function(){  
           $(this).attr("draggable", "true");
       });
-
-      //初始化设计器
-
-      // self.$get('initDesignerWrapper')();
-
-      // var Tabs = Vue.extend({
-      //   template: '      <ui-tab header="form.vue"> \
-      //              <ui-icon-button class="panel-close" type="flat" icon="close" color="danger"></ui-icon-button> \
-      //               <div>fuck{{firstName}}{{lastName}}{{alias}}</div> \
-      //             </ui-tab>'
-      // })
-      // // 创建一个 Profile 实例
-      // var tabs = new Tabs({
-      //   data: {
-      //     firstName: 'Walter',
-      //     lastName: 'White',
-      //     alias: 'Heisenberg'
-      //   }
-      // })
-      // // 挂载到元素上
-      // tabs.$mount('#fuckub')
 
     });
 
@@ -131,8 +86,8 @@ export default {
 
   methods: {
 
-    startCoding: function() {
-      window.startCoding(this.designer);
+    startCoding: function(designer) {
+      window.startCoding(designer);
     },
 
     tabChanged: function(tab) {
@@ -140,10 +95,19 @@ export default {
       this.currentView = tab.type;
 
       if(this.currentView == 'Editor') {
-        this.startCoding();
+        this.startCoding({
+            id: 'gospelDesignerArea',
+            context: '',
+            dom: '',
+            class: 'designer',
+            wrapper: '.designer-wrapper',
+            container: '.gospel-designer-area',
+            src: './static/designer.html',
+            width: '375',
+            height: '667',
+            name: 'gder'
+        });
       }
-
-      console.log(this.currentView);
 
     }
 
