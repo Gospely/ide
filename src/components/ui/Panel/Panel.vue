@@ -2,7 +2,7 @@
 
 	<div class="panel">
 		<div class="panel-header">
-			<div title="{{tab.title}}" v-for="(key, tab) in tabsHeader" @click="toggleTab(key, tab)" class="panel-header-item" v-bind:class="{'active': tab.active}">
+			<div title="{{tab.title}}" v-for="(key, tab) in panels" @click="toggleTab(key, tab)" class="panel-header-item" v-bind:class="{'active': tab.active}">
 				<div class="label">{{tab.title}}</div>
 				<div class="close">
 					<ui-icon-button @click="closeTab(key)" v-if="tab.active" type="clear" icon="close" color="white"></ui-icon-button>
@@ -11,6 +11,11 @@
 			</div>
 		</div>
 		<div class="panel-body">
+			<panel-tab v-for="(key, panel) in panels" :active.sync="panel.active" :title.sync="panel.title">
+		      	<designer v-if="panel.type == 'Designer'" :designer.sync="panel.designer"></designer>
+            	<editor v-if="panel.type == 'Editor'" :codes.sync="panel.codes"></editor>
+    	        <terminal :link="panel.active" v-if="panel.type == 'Terminal'"></terminal>
+			</panel-tab>
 			<slot></slot>
 		</div>
 	</div>
@@ -29,7 +34,7 @@
 
 		props: {
 
-			tabsHeader: {
+			panels: {
 				type: Array,
 				default () {
 					return [];
@@ -40,8 +45,8 @@
 
 		ready () {
 
-			for (var i = 0; i < this.tabsHeader.length; i++) {
-				var tab = this.tabsHeader[i];
+			for (var i = 0; i < this.panels.length; i++) {
+				var tab = this.panels[i];
 				if(tab.active) {
 					this.$set('currentTab', i);
 					break;
@@ -66,9 +71,9 @@
 
 				this.isTabClear();
 
-				this.tabsHeader[key].active = true;
+				this.panels[key].active = true;
 
-				var prevTab = this.tabsHeader[this.currentTab];
+				var prevTab = this.panels[this.currentTab];
 
 				if(prevTab) {
 					prevTab.active = false;
@@ -89,7 +94,7 @@
 			},
 
 			isTabClear: function() {
-				var isClear = this.tabsHeader.length <= 0;
+				var isClear = this.panels.length <= 0;
 
 				if(isClear) {
 					this.$dispatch('tabClear');
@@ -98,7 +103,7 @@
 			},
 
 			closeTab: function(key) {
-				this.tabsHeader.splice(key, 1);
+				this.panels.splice(key, 1);
 
 				this.isTabClear();
 
@@ -110,9 +115,9 @@
 					
 				var prevTab = key - 1 < 0 ? 0 : key - 1;
 
-				console.log(prevTab, this.tabsHeader);
+				console.log(prevTab, this.panels);
 
-				this.toggleTab(prevTab, this.tabsHeader[prevTab]);
+				this.toggleTab(prevTab, this.panels[prevTab]);
 			}
 		}
 

@@ -31,7 +31,7 @@
     
     <forms :show-title="false" v-bind:styles="designStyles" fid="form">
       <section slot="content" class="design">
-        <design-panel></design-panel>
+        <tab-panel></tab-panel>
       </section>
     </forms>
 
@@ -41,11 +41,11 @@
           <attr-panel slot="content"></attr-panel>
       </forms>
     </div>
-
-<!--     <forms :show-title="true" v-show="true" v-bind:styles="consoleStyles" fid="console">
+<!-- 
+    <forms :show-title="true" v-show="true" v-bind:styles="consoleStyles" fid="console">
       <span slot="title">控制台</span>
       <div slot="content">
-        <terminal></terminal>
+        <terminal :link="false"></terminal>
       </div>
     </forms> -->
 
@@ -56,11 +56,10 @@
 <script>
 
 import controlsPanel from './controls.vue';
-import designPanel from './design.vue';
+import tabPanel from './TabPanel.vue';
 import attrPanel from './attr.vue';
 import store from '../vuex.js';
 import forms from './forms/form.vue';
-import terminal from './terminal.vue';
 
 export default {
   data () {
@@ -128,10 +127,9 @@ export default {
 
   components: {
     controlsPanel,
-    designPanel,
+    tabPanel,
     forms,
-    attrPanel,
-    terminal
+    attrPanel
   },
 
   methods: {
@@ -304,7 +302,6 @@ export default {
             });
         })
         .on('copy_node.jstree', function (e, data) {
-          console.log(e, data);
           $.post(self.apiBase + 'fs/copy', { 'file' : data.original.id, 'newFile' : data.parent })
             .done(function (d) {
               //data.instance.load_node(data.parent);
@@ -319,15 +316,8 @@ export default {
         .on('select_node.jstree', function(e, data) {
           var currentClickTimestamp = e.timeStamp;
 
-          console.log('self');
-
-          console.log(currentClickTimestamp, preClickTimestamp);
-
           if(currentClickTimestamp - preClickTimestamp <= 200) {
             //dbl click
-
-            console.log('dbl click');
-
             $.post(self.apiBase + 'fs/read', {fileName: data.node.id})
               .done(function(d) {
                 util.pin(d);
@@ -344,7 +334,6 @@ export default {
 
         })
         .on('changed.jstree', function (e, data) {
-          console.log('changed.jstree', e, data);
           if(data && data.selected && data.selected.length) {
             $.get(self.apiBase + 'fs/list/optional/' + data.selected, function (d) {
               if(d && typeof d.type !== 'undefined') {
@@ -378,9 +367,6 @@ export default {
                 }
               }
             });
-        } else {
-          $('#data .content').hide();
-          $('#data .default').html('Select a file from the tree.').show();
         }
       });
 

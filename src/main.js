@@ -17,6 +17,11 @@ import 'animate.css';
 import Panel from './components/ui/Panel/Panel.vue';
 import PanelTab from './components/ui/Panel/PanelTab.vue';
 
+import Designer from './components/template/Designer.vue';
+import Editor from './components/template/Editor.vue';
+
+import Terminal from './components/terminal.vue';
+
 import util from './util/index.js';
 
 window.util = util;
@@ -27,6 +32,10 @@ Vue.use(Vuex);
 
 Vue.component('panel', Panel);
 Vue.component('panel-tab', PanelTab);
+
+Vue.component('Designer', Designer);
+Vue.component('Editor', Editor);
+Vue.component('Terminal', Terminal);
 
 //----------------------------初始化AJAX----------------------------
 

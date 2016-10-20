@@ -18,9 +18,36 @@
 
 		},
 
+		props: {
+
+			link: {
+				type: Boolean,
+				default () {
+					return true;
+				}
+			}
+
+		},
+
 		ready () {
 
 			this.$nextTick(() => {
+				this.$get('init')();
+			});
+
+		},
+
+		watch: {
+
+			link: function(v, v2) {
+				// console.log('change', v, v2);
+			}
+
+		},
+
+		methods: {
+
+			init: function() {
 
 				var term,
 				    protocol,
@@ -153,9 +180,7 @@
 				}
 
 
-
-
-			});
+			}
 
 		}
 

@@ -1,18 +1,14 @@
 <template>
 
-  <panel @tabchanged="tabChanged" :tabs-header.sync="tabs.tabsHeader">
+  <panel @tabchanged="tabChanged" :panels.sync="tabs.panels">
     
-    <panel-tab :active="true" title="form.vue [设计]">
+<!--     <panel-tab :active="true" title="form.vue [设计]">
       <designer :designer.sync="designer"></designer>
     </panel-tab>
 
     <panel-tab :active="false" title="form.vue">
       <editor :codes.sync="codes"></editor>
-    </panel-tab>
-
-    <panel-tab :active="false" title="控制台">
-      <terminal></terminal>
-    </panel-tab>
+    </panel-tab>-->
 
   </panel>
 
@@ -23,33 +19,38 @@
 import Vue from 'Vue';
 import { incrementCounter } from '../vuex/actions.js';
 
-import Designer from './template/Designer.vue';
-import Editor from './template/Editor.vue';
-
-import terminal from './terminal.vue';
-
 export default {
 
   components: {
-    Designer,
-    Editor,
-    terminal
   },
 
   data () {
     return {
 
       tabs: {
-        tabsHeader: [{
+        panels: [{
           title: 'form.vue [设计]',
           src: '',
           type: 'Designer',
-          active: true
+          active: true,
+          designer: {
+            id: 'gospelDesignerArea',
+            context: '',
+            dom: '',
+            class: 'designer',
+            wrapper: '.designer-wrapper',
+            container: '.gospel-designer-area',
+            src: './static/designer.html',
+            width: '375',
+            height: '667',
+            name: 'gder'
+          }
         }, {
           title: 'form.vue',
           src: '',
           type: 'Editor',
-          active: false
+          active: false,
+          codes: '// TO DO'
         }, {
           title: '控制台',
           src: '',
