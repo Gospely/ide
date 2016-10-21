@@ -35,19 +35,22 @@ export default {
             width: '375',
             height: '667',
             name: 'gder'
-          }
+          },
+          extname: ''
         }, {
           title: 'form.vue',
           src: '',
           type: 'Editor',
           active: false,
           codes: '// TO DO',
-          id: 'editor'
+          id: 'editor',
+          extname: 'vue'
         }, {
           title: '控制台',
           src: '',
           type: 'Terminal',
-          active: false
+          active: false,
+          extname: ''
         }]
       },
 

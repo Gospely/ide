@@ -157,15 +157,14 @@ export default {
 
       var file = res.fields;
 
-      console.log(file.extname, file.fileName);
-
       var panel = {
         title: data.node.id,
         src: data.node.id,
         type: 'Editor',
         active: true,
         codes: file.content,
-        id: data.node.id.replace('.', '-').replace('/', '-')
+        id: data.node.id.replace('.', '-').replace('/', '-'),
+        extname: file.extname
       };
 
       this.$broadcast('new-tab-panels', panel);

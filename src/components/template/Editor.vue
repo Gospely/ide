@@ -22,6 +22,14 @@
 				default () {
 					return '';
 				}
+			},
+
+			details: {
+				type: Object,
+				required: true,
+				default () {
+					return {};
+				}
 			}
 		},
 
@@ -75,9 +83,36 @@
 
 	          	window.refreshDesignerCode = this.refreshDesignerCode;
 
-	          	var HTMLMode = ace.require("ace/mode/html").Mode;
-	          	var JavaScript = ace.require('ace/mode/javascript').Mode;
-	          	this.editor.session.setMode(new HTMLMode());
+	          	var initSyntaxHighlight = function() {
+
+		          	var modes = {},
+		          		modeNames = ['html', 'javascript', 'css'];
+
+		          	for (var i = 0; i < modeNames.length; i++) {
+		          		var mode = modeNames[i];
+		          		modes[mode] = ace.require('ace/mode/' + mode).Mode;
+		          	};
+
+		          	var transferExtName = function(name) {
+
+		          		var extnameTransferList = {
+		          			'': 'html',
+		          			'vue': 'html',
+		          			'json': 'javascript',
+		          			'js': 'javascript'
+		          		}
+
+		          		name = name.replace('.', '');
+
+		          		return extnameTransferList[name] || name;
+		          	}
+
+		          	this.details.extname = transferExtName(this.details.extname);
+		          	this.editor.session.setMode(new modes[this.details.extname]);
+
+				};
+
+				initSyntaxHighlight();
 
 	          	var editorBeforeChanged = new Date().getTime();
 

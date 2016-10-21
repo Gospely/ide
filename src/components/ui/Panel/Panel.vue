@@ -13,7 +13,7 @@
 		<div class="panel-body">
 			<panel-tab v-for="(key, panel) in panels" :active.sync="panel.active" :title.sync="panel.title">
 		      	<designer v-if="panel.type == 'Designer'" :designer.sync="panel.designer"></designer>
-            	<editor :id.sync="panel.id" v-if="panel.type == 'Editor'" :codes.sync="panel.codes"></editor>
+            	<editor :details.sync="panel" :id.sync="panel.id" v-if="panel.type == 'Editor'" :codes.sync="panel.codes"></editor>
     	        <terminal :link="panel.active" v-if="panel.type == 'Terminal'"></terminal>
 			</panel-tab>
 			<slot></slot>
@@ -107,15 +107,11 @@
 
 				this.isTabClear();
 
-				console.log(key);
-
 				if(key === 0) {
 					key = 1;
 				}
 					
 				var prevTab = key - 1 < 0 ? 0 : key - 1;
-
-				console.log(prevTab, this.panels);
 
 				this.toggleTab(prevTab, this.panels[prevTab]);
 			}
