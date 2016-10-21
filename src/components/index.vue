@@ -164,7 +164,8 @@ export default {
         src: data.node.id,
         type: 'Editor',
         active: true,
-        codes: file.content
+        codes: file.content,
+        id: data.node.id.replace('.', '-').replace('/', '-')
       };
 
       this.$broadcast('new-tab-panels', panel);

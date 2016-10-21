@@ -41,7 +41,8 @@ export default {
           src: '',
           type: 'Editor',
           active: false,
-          codes: '// TO DO'
+          codes: '// TO DO',
+          id: 'editor'
         }, {
           title: '控制台',
           src: '',
@@ -83,12 +84,16 @@ export default {
   events: {
 
     'new-tab-panels': function(tab) {
-      var tabExists = this.isTabExists(tab);
+
+      console.log(tab);
+
+      var tabExists = this.isTabExists(tab), 
+          panelTab = this.$children[0];
 
       if(!tabExists.exist) {
-        this.tabs.panels.push(tab);        
+        this.tabs.panels.push(tab);
+        panelTab.toggleTab(this.tabs.panels.length - 1, tab);    
       }else {
-        var panelTab = this.$children[0];
         panelTab.toggleTab(tabExists.index, tab);
       }
     }
@@ -128,18 +133,18 @@ export default {
       this.currentView = tab.type;
 
       if(this.currentView == 'Editor') {
-        this.startCoding({
-            id: 'gospelDesignerArea',
-            context: '',
-            dom: '',
-            class: 'designer',
-            wrapper: '.designer-wrapper',
-            container: '.gospel-designer-area',
-            src: './static/designer.html',
-            width: '375',
-            height: '667',
-            name: 'gder'
-        });
+        // this.startCoding({
+        //     id: 'gospelDesignerArea',
+        //     context: '',
+        //     dom: '',
+        //     class: 'designer',
+        //     wrapper: '.designer-wrapper',
+        //     container: '.gospel-designer-area',
+        //     src: './static/designer.html',
+        //     width: '375',
+        //     height: '667',
+        //     name: 'gder'
+        // });
       }
 
     }

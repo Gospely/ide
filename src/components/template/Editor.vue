@@ -1,6 +1,6 @@
 <template>
 
-    <div id="editor" v-bind:style="editorStyle">{{codes}}</div>
+    <div v-bind:id="id" v-bind:style="editorStyle">{{codes}}</div>
 
 </template>
 
@@ -14,7 +14,15 @@
 				default () {
 					return '';
 				}
-			}	
+			},
+
+			id: {
+				type: String,
+				required: true,
+				default () {
+					return '';
+				}
+			}
 		},
 
 		ready () {
@@ -28,8 +36,6 @@
 			window.startCoding = self.$get('startCoding');
 
 			var editorHeight = $('#form').height();
-
-			var self = this;
 
 			this.$nextTick(function() {
 				self.$set('editorStyle.height', (editorHeight - 30) + 'px');
@@ -61,7 +67,7 @@
 
 	          	//初始化编辑器
 	          	ace.require("ace/ext/language_tools");
-	          	self.editor = ace.edit("editor");
+	          	self.editor = ace.edit(self.id);
 	          	self.editor.setTheme("ace/theme/twilight");
 	          	self.editor.setOptions({
 	            	enableBasicAutocompletion: true
