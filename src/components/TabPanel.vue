@@ -47,11 +47,7 @@ export default {
           src: '',
           type: 'Terminal',
           active: false
-        }],
-
-        tabsPanel: {
-
-        }
+        }]
       },
 
       currentView: 'Designer'
@@ -84,10 +80,47 @@ export default {
     }
   },
 
+  events: {
+
+    'new-tab-panels': function(tab) {
+      var tabExists = this.isTabExists(tab);
+
+      if(!tabExists.exist) {
+        this.tabs.panels.push(tab);        
+      }else {
+        var panelTab = this.$children[0];
+        panelTab.toggleTab(tabExists.index, tab);
+      }
+    }
+
+  },
+
   methods: {
 
     startCoding: function(designer) {
       window.startCoding(designer);
+    },
+
+    isTabExists: function(tab) {
+
+      var flag = false,
+          index = 0;
+
+      for (var i = 0; i < this.tabs.panels.length; i++) {
+        var panel = this.tabs.panels[i];
+
+        if(tab.src == panel.src) {
+          flag = true;
+          index = i;
+        }
+
+      };
+
+      return {
+        exist: flag,
+        index: index
+      };
+
     },
 
     tabChanged: function(tab) {

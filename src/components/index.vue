@@ -153,6 +153,24 @@ export default {
       this.deleteFileConfirm = true;
     },
 
+    dispatchNewTab: function(data, res) {
+
+      var file = res.fields;
+
+      console.log(file.extname, file.fileName);
+
+      var panel = {
+        title: data.node.id,
+        src: data.node.id,
+        type: 'Editor',
+        active: true,
+        codes: file.content
+      };
+
+      this.$broadcast('new-tab-panels', panel);
+
+    },
+
     initFileTree: function() {
 
       var self = this,
@@ -315,8 +333,7 @@ export default {
             $.post(self.apiBase + 'fs/read', {fileName: data.node.id})
               .done(function(d) {
                 util.pin(d);
-
-                console.log(d);
+                self.dispatchNewTab(data, d);
               })
               .fail(function() {
                 data.instance.refresh();
