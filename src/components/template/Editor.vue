@@ -83,7 +83,7 @@
 
 	          	window.refreshDesignerCode = this.refreshDesignerCode;
 
-	          	var initSyntaxHighlight = function() {
+	          	var initSyntaxHighlight = () => {
 
 		          	var modes = {},
 		          		modeNames = ['html', 'javascript', 'css'];
