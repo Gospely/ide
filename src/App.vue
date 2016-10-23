@@ -26,8 +26,28 @@
 
             <div slot="actions">
 
+<button @click="startDebugging" class="ui-icon-button ui-icon-button-clear color-black ui-tooltip-theme tooltip-target tooltip-element-attached-top tooltip-element-attached-center tooltip-target-attached-bottom tooltip-target-attached-center">
+    <i class="ui-icon material-icons ui-icon-button-icon mdi mdi-play" aria-hidden="true">mdi mdi-play</i>
+
+    <div class="ui-progress-circular ui-icon-button-spinner v-transition" style="display: none; width: 24px; height: 24px;">
+    <svg class="ui-progress-circular-indeterminate" viewBox="25 25 50 50" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <circle class="ui-progress-circular-indeterminate-path black" cx="50" cy="50" r="20" fill="none" stroke-miterlimit="10" stroke-width="4.5">
+    </circle></svg>
+
+    
+</div>
+
+    <div class="ui-ripple-ink"></div>
+
+    
+
+    
+
+    
+</button>
+
                 <ui-icon-button
-                    type="clear" color="black" icon="mdi mdi-play" v-el:debug
+                    type="clear" @click="startDebugging" color="black" icon="mdi mdi-play" v-el:debug
                 ></ui-icon-button>
 
                 <ui-tooltip :trigger="$els.debug" content="启动调试"></ui-tooltip>
@@ -116,6 +136,8 @@
 
 <script>
 
+//./start.js -p 8888 -s 7777 -n vue-f7 -r /var/www/gospely/socket -a 6667
+
 export default {
   methods: {
 
@@ -159,6 +181,10 @@ export default {
 
     deleteProjectDenied: function() {
       
+    },
+
+    startDebugging: function() {
+      window.open('http://gospely.com:7676');
     }
   },
 

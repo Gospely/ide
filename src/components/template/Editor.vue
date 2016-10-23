@@ -108,7 +108,12 @@
 		          	}
 
 		          	this.details.extname = transferExtName(this.details.extname);
-		          	this.editor.session.setMode(new modes[this.details.extname]);
+
+		          	try {
+			          	this.editor.session.setMode(new modes[this.details.extname]);
+		          	}catch(error) {
+		          		util.alert('尚不支持的文件类型');
+		          	}
 
 				};
 
