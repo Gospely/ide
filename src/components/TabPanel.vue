@@ -6,7 +6,6 @@
 
 <script>
 
-import Vue from 'Vue';
 import { incrementCounter } from '../vuex/actions.js';
 
 export default {
