@@ -88,32 +88,37 @@ export default {
       fileToRemove: {
         e: {},
         data: {}
-      }
+      },
+
+      projectFolder: '',
+      projectDomain: ''
 
     }
   },
 
   ready() {
 
+    var self = this;
+
     this.$nextTick(() => {
 
-      // $Model.FSService.ls().then( (res) => {
+      var app = this.$route.params;
 
-      //   var response = res.data,
-      //       fileTree = response.data;
+      $Model.AppService.info(app.appId).then( (res) => {
 
-      //   if(response.code == 200) {
+        var app = res.data;
 
+        if(app.code == 1) {
+          var appInfo = app.fields;
+          self.$set('projectFolder', appInfo.creator + '_' + appInfo.name);
+          self.$set('projectDomain', appInfo.name + '_' + appInfo.creator);
 
-      //   }else {
-      //     util.alert(response.message);
-      //   }
+          this.$get('initFileTree')();
+        }else {
+          util.alert(response.message);
+        }
 
-      // }).catch( (error) => {
-      //   util.alert('文件树请求失败');
-      // });
-//
-      this.$get('initFileTree')(); 
+      });
 
     });
 
@@ -182,7 +187,8 @@ export default {
             'data' : {
               'url' : self.apiBase + 'fs/list/optional/',
               'data' : function (node) {
-                return { 'id' : node.id == '#' ? '' : node.id };
+                console.log('node', node);
+                return { 'id' : node.id == '#' ? self.projectFolder : node.id };
               }
             },
             'check_callback' : function(o, n, p, i, m) {

@@ -8,6 +8,12 @@ module.exports = function(router){
 
 			}
 		},
+
+		'archive/:appId': {
+			component: require('./components/index.vue'),
+			name: 'archive'
+		},
+
 		'/404': {
 			component: require('./404.vue'),
 			name: '404'

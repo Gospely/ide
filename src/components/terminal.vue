@@ -56,7 +56,7 @@
 				    pid,
 				    charWidth,
 				    charHeight,
-				    port = 8888,
+				    port = 6835,
 				    domain = 'gospely.com',
 				    baseUrl = 'http://' + domain + ':' + port;
 
