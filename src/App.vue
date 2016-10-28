@@ -122,6 +122,41 @@
 //./start.js -p 8888 -s 7777 -n vue-f7 -r /var/www/gospely/socket -a 6667
 
 export default {
+
+  ready () {
+
+    var self = this;
+
+    this.$nextTick(() => {
+
+      var app = this.$route.params;
+
+      $Model.AppService.info(app.appId).then( (res) => {
+
+        var app = res.data;
+
+        if(app.code == 1) {
+          var appInfo = app.fields;
+          self.$set('appInfo', appInfo);
+        }else {
+          util.alert(response.message);
+        }
+
+      });
+
+    });
+
+
+  },
+
+  data: function() {
+
+    return {
+      appInfo: {}
+    }
+
+  },
+
   methods: {
 
     setLoading: function() {
@@ -167,7 +202,8 @@ export default {
     },
 
     startDebugging: function() {
-      window.open('http://gospely.com:7676');
+      console.log(this.appInfo.port);
+      window.open('http://gospely.com:' + (this.appInfo.port || 80));
     }
   },
 

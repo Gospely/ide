@@ -13,7 +13,9 @@
 		data () {
 
 			return {
-				dataRows: 80
+				dataRows: 80,
+
+				socketPort: ''
 			}
 
 		},
@@ -31,8 +33,26 @@
 
 		ready () {
 
+
+	    	var self = this;
+
 			this.$nextTick(() => {
-				this.$get('init')();
+
+		      	var app = this.$route.params;
+
+		      	$Model.AppService.info(app.appId).then( (res) => {
+
+		        	var app = res.data;
+
+		        	if(app.code == 1) {
+		          		var appInfo = app.fields;
+		          		self.$set('socketPort', appInfo.socketPort);
+						this.$get('init')();
+		        	}else {
+		          		util.alert(response.message);
+		        	}
+
+		      });
 			});
 
 		},
@@ -56,7 +76,7 @@
 				    pid,
 				    charWidth,
 				    charHeight,
-				    port = 6835,
+				    port = this.socketPort,
 				    domain = 'gospely.com',
 				    baseUrl = 'http://' + domain + ':' + port;
 
