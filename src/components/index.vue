@@ -110,7 +110,7 @@ export default {
 
         if(app.code == 1) {
           var appInfo = app.fields;
-          self.$set('projectFolder', appInfo.creator + '_' + appInfo.name);
+          self.$set('projectFolder', appInfo.name + '_' + appInfo.creator);
           self.$set('projectDomain', appInfo.name + '_' + appInfo.creator);
 
           this.$get('initFileTree')();
