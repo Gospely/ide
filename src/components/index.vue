@@ -110,12 +110,12 @@ export default {
 
         if(app.code == 1) {
           var appInfo = app.fields;
-          self.$set('projectFolder', appInfo.name + '_' + appInfo.creator);
+          self.$set('projectFolder', appInfo.docker.replace('gospel_project_', ''));
           self.$set('projectDomain', appInfo.name + '_' + appInfo.creator);
 
           this.$get('initFileTree')();
         }else {
-          util.alert(response.message);
+          util.alert(app.message);
         }
 
       });
@@ -352,7 +352,7 @@ export default {
         })
         .on('changed.jstree', function (e, data) {
           if(data && data.selected && data.selected.length) {
-            $.get(self.apiBase + 'fs/list/optional/' + data.selected, function (d) {
+            $.post(self.apiBase + 'fs/list/file/?id=' + data.selected, function(d) {
               if(d && typeof d.type !== 'undefined') {
                 $('#data .content').hide();
                 switch(d.type) {
